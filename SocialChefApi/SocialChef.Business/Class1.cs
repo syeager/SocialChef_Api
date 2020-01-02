@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SocialChef.Business
+﻿namespace SocialChef.Business
 {
     internal class Class1
     {

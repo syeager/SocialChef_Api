@@ -2,7 +2,6 @@ using NUnit.Framework;
 
 namespace SocialChef.Persistence.Test
 {
-    [TestFixture]
     public class Tests
     {
         [SetUp]
@@ -13,7 +12,6 @@ namespace SocialChef.Persistence.Test
         [Test]
         public void Test1()
         {
-            Class1 x = new Class1();
             Assert.Pass();
         }
     }

@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SocialChef.Persistence\SocialChef.Persistence.csproj">
       <PrivateAssets>all</PrivateAssets>
     </ProjectReference>
