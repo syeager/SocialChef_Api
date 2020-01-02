@@ -2,6 +2,7 @@ using NUnit.Framework;
 
 namespace SocialChef.Persistence.Test
 {
+    [TestFixture]
     public class Tests
     {
         [SetUp]
