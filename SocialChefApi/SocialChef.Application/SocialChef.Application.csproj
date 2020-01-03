@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LittleByte\LittleByte.Asp\LittleByte.Asp.csproj" />
     <ProjectReference Include="..\SocialChef.Business\SocialChef.Business.csproj" />
   </ItemGroup>
 

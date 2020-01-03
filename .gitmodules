@@ -1,0 +1,3 @@
+[submodule "SocialChefApi/LittleByte"]
+	path = SocialChefApi/LittleByte
+	url = https://littlebytegames@dev.azure.com/littlebytegames/Common/_git/common-asp
