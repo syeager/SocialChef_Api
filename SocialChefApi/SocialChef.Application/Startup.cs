@@ -29,11 +29,11 @@ namespace SocialChef.Application
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(policy => policy.AllowAnyOrigin());
             app.UseHttpsRedirection();
+            app.UseHealthChecks("/health", new HealthCheckOptions {ResponseWriter = WriteHealthResponse});
             app.UseRouting();
             app.UseAuthorization();
-
-            app.UseHealthChecks("/health", new HealthCheckOptions {ResponseWriter = WriteHealthResponse});
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
