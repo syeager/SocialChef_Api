@@ -22,6 +22,12 @@ namespace SocialChef.Application.Controllers
             this.logger = logger;
         }
 
+        [HttpGet("test")]
+        public string GetTest()
+        {
+            return "Hello World!";
+        }
+
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {

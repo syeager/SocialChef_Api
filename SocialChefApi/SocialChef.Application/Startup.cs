@@ -35,7 +35,11 @@ namespace SocialChef.Application
             app.UseRouting();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
+            });
         }
 
         private static Task WriteHealthResponse(HttpContext httpContext, HealthReport report)
