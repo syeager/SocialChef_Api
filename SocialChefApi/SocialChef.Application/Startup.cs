@@ -19,6 +19,7 @@ namespace SocialChef.Application
         {
             services.AddHealthChecks();
             services.AddControllers();
+            services.AddSwaggerDocument();
         }
 
         [UsedImplicitly]
@@ -34,6 +35,9 @@ namespace SocialChef.Application
             app.UseHealthChecks("/health", new HealthCheckOptions {ResponseWriter = WriteHealthResponse});
             app.UseRouting();
             app.UseAuthorization();
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
