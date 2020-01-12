@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.Azure.Cosmos.Linq;
 using SocialChef.Persistence;
 
 namespace SocialChef.Business.Services
@@ -19,8 +20,9 @@ namespace SocialChef.Business.Services
 
         public async Task CreateAsync()
         {
-            documentContext.Recipes.Add(new Recipe());
-            await Task.CompletedTask;
+            var count = await documentContext.Recipes.CountAsync();
+            documentContext.Recipes.Add(new Recipe($"New Recipe - {count + 1}"));
+            await documentContext.SaveChangesAsync();
         }
     }
 }

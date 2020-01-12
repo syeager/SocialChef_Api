@@ -1,11 +1,8 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using LittleByte.Asp.Database;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace SocialChef.Persistence
 {
@@ -24,7 +21,7 @@ namespace SocialChef.Persistence
 
             services.AddDbContext<CosmosContext>();
 
-            CreateCosmos(options).GetAwaiter();
+            CosmosContext.Create(options).GetAwaiter();
         }
 
         private static CosmosOptions ConfigureOptions(IServiceCollection services, IConfiguration configuration)
@@ -43,20 +40,6 @@ namespace SocialChef.Persistence
             Task<bool> HealthCheck(CosmosContext context, CancellationToken token)
             {
                 return context.CanConnectAsync(options.DatabaseName, options.ContainerName, token);
-            }
-        }
-
-        private static async Task CreateCosmos(CosmosOptions options)
-        {
-            try
-            {
-                await using var context = new CosmosContext(new OptionsWrapper<CosmosOptions>(options));
-                var response = await context.Database.GetCosmosClient().CreateDatabaseIfNotExistsAsync(options.DatabaseName);
-                await response.Database.CreateContainerIfNotExistsAsync(options.ContainerName, "/_");
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e);
             }
         }
     }
