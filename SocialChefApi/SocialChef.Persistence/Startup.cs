@@ -7,9 +7,15 @@ namespace SocialChef.Persistence
     {
         public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<CosmosOptions>(configuration.GetSection(CosmosOptions.OptionsKey));
+            ConfigureCosmos(services, configuration);
 
             services.AddDbContext<CosmosContext>();
+        }
+
+        private static void ConfigureCosmos(IServiceCollection services, IConfiguration configuration)
+        {
+            var section = configuration.GetSection(CosmosOptions.OptionsKey);
+            services.Configure<CosmosOptions>(section);
         }
     }
 }
