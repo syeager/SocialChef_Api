@@ -1,10 +1,8 @@
-﻿using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace SocialChef.Persistence
 {
-    [UsedImplicitly]
     public class CosmosContext: DbContext
     {
         private readonly CosmosOptions options;
