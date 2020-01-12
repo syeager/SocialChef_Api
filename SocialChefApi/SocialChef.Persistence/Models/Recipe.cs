@@ -1,6 +1,7 @@
 ﻿namespace SocialChef.Persistence
 {
-    internal class Class1
+    public class Recipe : DocumentEntity
     {
+
     }
 }
