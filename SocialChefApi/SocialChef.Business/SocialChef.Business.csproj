@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SocialChef.Persistence\SocialChef.Persistence.csproj">
-      <PrivateAssets>all</PrivateAssets>
+      <PrivateAssets>compile</PrivateAssets>
     </ProjectReference>
   </ItemGroup>
 
