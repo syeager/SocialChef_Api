@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.Azure.Cosmos.Linq;
+using SocialChef.Business.DTOs;
 using SocialChef.Persistence;
 
 namespace SocialChef.Business.Services
 {
     public interface IRecipeService
     {
-        Task CreateAsync();
+        Task<RecipeDto> CreateAsync(string name);
     }
 
     internal class RecipeService : IRecipeService
@@ -18,11 +18,14 @@ namespace SocialChef.Business.Services
             this.documentContext = documentContext;
         }
 
-        public async Task CreateAsync()
+        public async Task<RecipeDto> CreateAsync(string name)
         {
-            var count = await documentContext.Recipes.CountAsync();
-            documentContext.Recipes.Add(new Recipe($"New Recipe - {count + 1}"));
+            documentContext.Recipes.Add(new Recipe(name));
             await documentContext.SaveChangesAsync();
+
+            // how to convert dao to dto
+            // 
+            return new RecipeDto("");
         }
     }
 }

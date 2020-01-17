@@ -7,18 +7,26 @@ namespace SocialChef.Persistence
 {
     public class CosmosContext : DbContext
     {
-        private readonly CosmosOptions options;
+        private readonly CosmosOptions? options;
 
         public DbSet<Recipe> Recipes { get; set; } = null!;
 
-        public CosmosContext(IOptions<CosmosOptions> options)
+        private CosmosContext(IOptions<CosmosOptions> options)
         {
             this.options = options.Value;
         }
 
+        public CosmosContext(DbContextOptions<CosmosContext> contextOptions)
+            : base(contextOptions)
+        {
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseCosmos(options.Url, options.Key, options.DatabaseName);
+            if(options != null)
+            {
+                optionsBuilder.UseCosmos(options.Url, options.Key, options.DatabaseName);
+            }
         }
 
         public static async Task Create(CosmosOptions options)

@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>8.0</LangVersion>
-    <nullable>enable</nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -15,7 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LittleByte\LittleByte.Asp.Test\LittleByte.Asp.Test.csproj" />
     <ProjectReference Include="..\SocialChef.Business\SocialChef.Business.csproj" />
+    <ProjectReference Include="..\SocialChef.Persistence\SocialChef.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
