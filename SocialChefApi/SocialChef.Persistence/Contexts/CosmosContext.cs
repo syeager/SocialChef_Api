@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -16,6 +17,7 @@ namespace SocialChef.Persistence
             this.options = options.Value;
         }
 
+        [UsedImplicitly]
         public CosmosContext(DbContextOptions<CosmosContext> contextOptions)
             : base(contextOptions)
         {
