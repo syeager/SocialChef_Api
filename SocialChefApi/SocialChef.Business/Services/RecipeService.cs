@@ -32,8 +32,14 @@ namespace SocialChef.Business.Services
 
         public async Task<RecipeDto> GetAsync(string entityID)
         {
-            await Task.CompletedTask;
-            throw new NotFoundException(typeof(RecipeDto), entityID);
+            var entity = await documentContext.Recipes.FindAsync(entityID);
+
+            if(entity == null)
+            {
+                throw new NotFoundException(typeof(RecipeDto), entityID);
+            }
+
+            return ToDto(entity);
         }
 
         private static RecipeDto ToDto(Recipe entity)

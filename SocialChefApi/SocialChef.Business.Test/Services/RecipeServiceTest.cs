@@ -34,9 +34,19 @@ namespace SocialChef.Business.Test.Services
         }
 
         [Test]
-        public void Get_None_ReturnRecipe()
+        public void Get_None_ThrowNotFound()
         {
             Assert.ThrowsAsync<NotFoundException>(() => testObj.GetAsync("abc"));
+        }
+
+        [Test]
+        public async Task Get_Exists_ReturnRecipe()
+        {
+            var entity = dbContext.AddAndSave(new Recipe("test"));
+
+            var found = await testObj.GetAsync(entity.ID);
+
+            Assert.AreEqual(entity.ID, found.ID);
         }
     }
 }
