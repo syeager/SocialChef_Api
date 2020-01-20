@@ -20,12 +20,16 @@ namespace SocialChef.Business.Services
 
         public async Task<RecipeDto> CreateAsync(string name)
         {
-            documentContext.Recipes.Add(new Recipe(name));
+            var entity = new Recipe(name);
+            documentContext.Recipes.Add(entity);
             await documentContext.SaveChangesAsync();
 
-            // how to convert dao to dto
-            // 
-            return new RecipeDto("");
+            return ToDto(entity);
+        }
+
+        private static RecipeDto ToDto(Recipe entity)
+        {
+            return new RecipeDto(entity.ID, entity.Name);
         }
     }
 }
