@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using LittleByte.Asp.Exceptions;
 using LittleByte.Asp.Test.Utility;
 using NUnit.Framework;
 using SocialChef.Business.Requests;
@@ -30,6 +31,12 @@ namespace SocialChef.Business.Test.Services
 
             Assert.AreEqual(1, dbContext.Recipes.Count());
             Assert.IsNotNull(dto);
+        }
+
+        [Test]
+        public void Get_None_ReturnRecipe()
+        {
+            Assert.ThrowsAsync<NotFoundException>(() => testObj.GetAsync("abc"));
         }
     }
 }
