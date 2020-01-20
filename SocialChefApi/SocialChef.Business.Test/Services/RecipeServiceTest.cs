@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using LittleByte.Asp.Test.Utility;
 using NUnit.Framework;
+using SocialChef.Business.Requests;
 using SocialChef.Business.Services;
 using SocialChef.Persistence;
 
@@ -23,7 +24,9 @@ namespace SocialChef.Business.Test.Services
         [TestCase]
         public async Task Create_Valid_CreateRecipe()
         {
-            var dto = await testObj.CreateAsync("test");
+            var request = new CreateRecipeRequest("test");
+
+            var dto = await testObj.CreateAsync(request);
 
             Assert.AreEqual(1, dbContext.Recipes.Count());
             Assert.IsNotNull(dto);

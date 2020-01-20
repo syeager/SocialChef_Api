@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SocialChef.Business.DTOs;
+using SocialChef.Business.Requests;
 using SocialChef.Business.Services;
 
 namespace SocialChef.Application.Controllers
@@ -17,9 +18,9 @@ namespace SocialChef.Application.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<RecipeDto>> Create()
+        public async Task<ActionResult<RecipeDto>> Create(CreateRecipeRequest request)
         {
-            var dto = await recipeService.CreateAsync("");
+            var dto = await recipeService.CreateAsync(request);
             return Created("", dto);
         }
     }

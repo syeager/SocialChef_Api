@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks;
 using SocialChef.Business.DTOs;
+using SocialChef.Business.Requests;
 using SocialChef.Persistence;
 
 namespace SocialChef.Business.Services
 {
     public interface IRecipeService
     {
-        Task<RecipeDto> CreateAsync(string name);
+        Task<RecipeDto> CreateAsync(CreateRecipeRequest request);
     }
 
     internal class RecipeService : IRecipeService
@@ -18,9 +19,9 @@ namespace SocialChef.Business.Services
             this.documentContext = documentContext;
         }
 
-        public async Task<RecipeDto> CreateAsync(string name)
+        public async Task<RecipeDto> CreateAsync(CreateRecipeRequest request)
         {
-            var entity = new Recipe(name);
+            var entity = new Recipe(request.Name);
             documentContext.Recipes.Add(entity);
             await documentContext.SaveChangesAsync();
 
