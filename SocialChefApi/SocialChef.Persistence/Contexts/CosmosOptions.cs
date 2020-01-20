@@ -4,9 +4,17 @@
     {
         public const string OptionsKey = "CosmosDB";
 
-        public string Url { get; set; } = null!;
-        public string Key { get; set; } = null!;
-        public string DatabaseName { get; set; } = null!;
-        public string ContainerName { get; set; } = null!;
+        public string Url { get; set; }
+        public string Key { get; set; }
+        public string DatabaseName { get; set; }
+        public string ContainerName { get; set; }
+
+        public CosmosOptions()
+        {
+            Url = "";
+            Key = "";
+            DatabaseName = "";
+            ContainerName = "";
+        }
     }
 }
