@@ -21,7 +21,16 @@ namespace SocialChef.Application.Controllers
         public async Task<ActionResult<RecipeDto>> Create(CreateRecipeRequest request)
         {
             var dto = await recipeService.CreateAsync(request);
-            return Created("", dto);
+
+            return CreatedAtAction(nameof(Get), new {recipeID = dto.ID}, dto);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<RecipeDto>> Get(string recipeID)
+        {
+            var dto = await recipeService.GetAsync(recipeID);
+
+            return Ok(dto);
         }
     }
 }

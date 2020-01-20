@@ -18,9 +18,10 @@ namespace SocialChef.Persistence
         }
 
         [UsedImplicitly]
-        public CosmosContext(DbContextOptions<CosmosContext> contextOptions)
+        public CosmosContext(DbContextOptions<CosmosContext> contextOptions, IOptions<CosmosOptions>? options)
             : base(contextOptions)
         {
+            this.options = options?.Value;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

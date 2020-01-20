@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using LittleByte.Asp.Exceptions;
 using LittleByte.Asp.Test.Utility;
+using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using SocialChef.Business.Requests;
 using SocialChef.Business.Services;
@@ -17,7 +18,7 @@ namespace SocialChef.Business.Test.Services
         [SetUp]
         public void SetUp()
         {
-            DbContextUtility.CreateCosmosInMemory(ref dbContext);
+            DbContextUtility.CreateCosmosInMemory(ref dbContext, (IOptions<CosmosOptions>)null);
 
             testObj = new RecipeService(dbContext);
         }
