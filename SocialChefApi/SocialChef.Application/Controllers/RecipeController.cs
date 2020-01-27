@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
+using System.Threading.Tasks;
+using LittleByte.Asp.Application;
 using Microsoft.AspNetCore.Mvc;
 using SocialChef.Business.DTOs;
 using SocialChef.Business.Requests;
@@ -18,19 +21,20 @@ namespace SocialChef.Application.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<RecipeDto>> Create(CreateRecipeRequest request)
+        [ResponseType(typeof(RecipeDto), HttpStatusCode.Created)]
+        public async Task<ApiResult<RecipeDto>> Create(CreateRecipeRequest request)
         {
             var dto = await recipeService.CreateAsync(request);
-
-            return CreatedAtAction(nameof(Get), new {recipeID = dto.ID}, dto);
+            return new ApiResult<RecipeDto>(HttpStatusCode.Created, dto);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<RecipeDto>> Get(string recipeID)
+        [HttpGet("{recipeID}")]
+        [ResponseType(typeof(RecipeDto), HttpStatusCode.OK)]
+        [ResponseType(typeof(RecipeDto), HttpStatusCode.NotFound)]
+        public async Task<ApiResult<RecipeDto>> Get([Required] string recipeID)
         {
             var dto = await recipeService.GetAsync(recipeID);
-
-            return Ok(dto);
+            return new ApiResult<RecipeDto>(HttpStatusCode.OK, dto);
         }
     }
 }

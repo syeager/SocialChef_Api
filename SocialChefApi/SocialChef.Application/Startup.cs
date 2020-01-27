@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using LittleByte.Asp.Application;
 using LittleByte.Asp.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -43,6 +44,7 @@ namespace SocialChef.Application
             app.UseCors(policy => policy.AllowAnyOrigin());
             app.UseHttpsRedirection();
             app.UseHealthChecks("/health", new HealthCheckOptions {ResponseWriter = WriteHealthResponse});
+            app.UseHttpExceptions();
             app.UseRouting();
             app.UseAuthorization();
 
