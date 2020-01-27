@@ -1,18 +1,14 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-using LittleByte.Asp.Application;
-using LittleByte.Asp.Exceptions;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using NSwag.Annotations;
 using SocialChef.Business.DTOs;
 using SocialChef.Business.Requests;
 using SocialChef.Business.Services;
-using Controller = LittleByte.Asp.Application.Controller;
 
 namespace SocialChef.Application.Controllers
 {
-    public class RecipeController : Controller
+    [ApiController]
+    [Route("[controller]")]
+    public class RecipeController : ControllerBase
     {
         private readonly IRecipeService recipeService;
 
@@ -30,20 +26,11 @@ namespace SocialChef.Application.Controllers
         }
 
         [HttpGet]
-        [SwaggerResponse(HttpStatusCode.OK, typeof(ApiResponse<RecipeDto>), Description = "hey")]
-        public async Task<ApiResponse<RecipeDto>> Get(string recipeID)
+        public async Task<ActionResult<RecipeDto>> Get(string recipeID)
         {
-            try
-            {
-                RecipeDto dto = await recipeService.GetAsync(recipeID);
-                var response = ApiResponse<RecipeDto>.Success(HttpStatusCode.OK, dto);
-                return response;
-            }
-            catch(HttpException exception)
-            {
-                var response = HandleHttpException<RecipeDto>(exception);
-                return response;
-            }
+            var dto = await recipeService.GetAsync(recipeID);
+
+            return Ok(dto);
         }
     }
 }

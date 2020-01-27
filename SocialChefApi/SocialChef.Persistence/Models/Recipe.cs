@@ -5,13 +5,10 @@ namespace SocialChef.Persistence
 {
     public class Recipe : Document
     {
-        public string Name { get; }
+        public string Name { get; set; } = null!;
 
         [UsedImplicitly]
-        public Recipe()
-        {
-            Name = null!;
-        }
+        public Recipe(){}
 
         public Recipe(string name)
         {
