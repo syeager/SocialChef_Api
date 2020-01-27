@@ -4,11 +4,12 @@ namespace SocialChef.Business.Requests
 {
     public class CreateRecipeRequest
     {
-        public string Name { get; set; } = null!;
+        public string Name { get; }
 
         [UsedImplicitly]
         public CreateRecipeRequest()
         {
+            Name = null!;
         }
 
         public CreateRecipeRequest(string name)
