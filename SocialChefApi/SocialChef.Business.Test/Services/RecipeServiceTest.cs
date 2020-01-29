@@ -15,11 +15,16 @@ namespace SocialChef.Business.Test.Services
         private RecipeService testObj;
         private CosmosContext dbContext;
 
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            DbContextUtility.CreateCosmosInMemory(ref dbContext, (IOptions<CosmosOptions>)null);
+        }
+
         [SetUp]
         public void SetUp()
         {
-            DbContextUtility.CreateCosmosInMemory(ref dbContext, (IOptions<CosmosOptions>)null);
-
+            dbContext.EnsureRecreated();
             testObj = new RecipeService(dbContext);
         }
 
@@ -48,6 +53,22 @@ namespace SocialChef.Business.Test.Services
             var found = await testObj.GetAsync(entity.ID);
 
             Assert.AreEqual(entity.ID, found.ID);
+        }
+
+        [Test]
+        public void Delete_None_ThrowNotFound()
+        {
+            Assert.ThrowsAsync<NotFoundException>(() => testObj.DeleteAsync("abc"));
+        }
+
+        [Test]
+        public async Task Delete_Exists_DeleteRecipe()
+        {
+            var entity = dbContext.AddAndSave(new Recipe("test"));
+
+            await testObj.DeleteAsync(entity.ID);
+
+            Assert.False(dbContext.Recipes.Any());
         }
     }
 }

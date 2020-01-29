@@ -1,8 +1,9 @@
-﻿namespace SocialChef.Business.DTOs
+﻿using LittleByte.Asp.Business;
+
+namespace SocialChef.Business.DTOs
 {
-    public class RecipeDto
+    public class RecipeDto : Dto
     {
-        public string ID { get; set; }
         public string Name { get; set; }
 
         public RecipeDto(string id, string name)

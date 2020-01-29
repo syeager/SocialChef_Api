@@ -21,20 +21,29 @@ namespace SocialChef.Application.Controllers
         }
 
         [HttpPost]
-        [ResponseType(typeof(RecipeDto), HttpStatusCode.Created)]
+        [ResponseType(HttpStatusCode.Created, typeof(RecipeDto))]
         public async Task<ApiResult<RecipeDto>> Create(CreateRecipeRequest request)
         {
             var dto = await recipeService.CreateAsync(request);
-            return new ApiResult<RecipeDto>(HttpStatusCode.Created, dto);
+            return new CreatedResult<RecipeDto>(dto);
         }
 
         [HttpGet("{recipeID}")]
-        [ResponseType(typeof(RecipeDto), HttpStatusCode.OK)]
-        [ResponseType(typeof(RecipeDto), HttpStatusCode.NotFound)]
+        [ResponseType(HttpStatusCode.OK, typeof(RecipeDto))]
+        [ResponseType(HttpStatusCode.NotFound)]
         public async Task<ApiResult<RecipeDto>> Get([Required] string recipeID)
         {
             var dto = await recipeService.GetAsync(recipeID);
-            return new ApiResult<RecipeDto>(HttpStatusCode.OK, dto);
+            return new OkResult<RecipeDto>(dto);
+        }
+
+        [HttpDelete("{recipeID}")]
+        [ResponseType(HttpStatusCode.NoContent)]
+        [ResponseType(HttpStatusCode.NotFound)]
+        public async Task<ApiResult> Delete([Required] string recipeID)
+        {
+            await recipeService.DeleteAsync(recipeID);
+            return new DeletedResult<RecipeDto>(recipeID);
         }
     }
 }

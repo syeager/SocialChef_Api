@@ -10,6 +10,7 @@ namespace SocialChef.Business.Services
     {
         Task<RecipeDto> CreateAsync(CreateRecipeRequest request);
         Task<RecipeDto> GetAsync(string entityID);
+        Task DeleteAsync(string entityID);
     }
 
     internal class RecipeService : IRecipeService
@@ -32,6 +33,19 @@ namespace SocialChef.Business.Services
 
         public async Task<RecipeDto> GetAsync(string entityID)
         {
+            var entity = await FindEntity(entityID);
+            return ToDto(entity);
+        }
+
+        public async Task DeleteAsync(string entityID)
+        {
+            var entity = await FindEntity(entityID);
+            documentContext.Recipes.Remove(entity);
+            await documentContext.SaveChangesAsync();
+        }
+
+        private async Task<Recipe> FindEntity(string entityID)
+        {
             var entity = await documentContext.Recipes.FindAsync(entityID);
 
             if(entity == null)
@@ -39,7 +53,7 @@ namespace SocialChef.Business.Services
                 throw new NotFoundException(typeof(RecipeDto), entityID);
             }
 
-            return ToDto(entity);
+            return entity;
         }
 
         private static RecipeDto ToDto(Recipe entity)
