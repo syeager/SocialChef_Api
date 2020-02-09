@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Business.Test", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Application", "SocialChef.Application\SocialChef.Application.csproj", "{7EA53AF9-90B6-4D23-9452-2CC97F973721}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LittleByte.Asp", "LittleByte\LittleByte.Asp\LittleByte.Asp.csproj", "{F7D6E032-7A14-4EE3-A3A6-1CA1E6B039F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LittleByte.Asp", "LittleByte\LittleByte.Asp\LittleByte.Asp.csproj", "{F7D6E032-7A14-4EE3-A3A6-1CA1E6B039F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LittleByte.Asp.Test", "LittleByte\LittleByte.Asp.Test\LittleByte.Asp.Test.csproj", "{FEE0879C-3467-4D65-9FA8-29806CEB1F97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LittleByte.Asp.Test", "LittleByte\LittleByte.Asp.Test\LittleByte.Asp.Test.csproj", "{FEE0879C-3467-4D65-9FA8-29806CEB1F97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialChef.Identity", "SocialChef.Identity\SocialChef.Identity.csproj", "{4DCA711B-AA43-4491-A836-ED8DECCD5FE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{FEE0879C-3467-4D65-9FA8-29806CEB1F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEE0879C-3467-4D65-9FA8-29806CEB1F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEE0879C-3467-4D65-9FA8-29806CEB1F97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DCA711B-AA43-4491-A836-ED8DECCD5FE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DCA711B-AA43-4491-A836-ED8DECCD5FE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DCA711B-AA43-4491-A836-ED8DECCD5FE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DCA711B-AA43-4491-A836-ED8DECCD5FE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

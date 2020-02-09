@@ -6,12 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using SocialChef.Business.DTOs;
 using SocialChef.Business.Requests;
 using SocialChef.Business.Services;
+using Controller = LittleByte.Asp.Application.Controller;
 
 namespace SocialChef.Application.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class RecipeController : ControllerBase
+    public class RecipeController : Controller
     {
         private readonly IRecipeService recipeService;
 
