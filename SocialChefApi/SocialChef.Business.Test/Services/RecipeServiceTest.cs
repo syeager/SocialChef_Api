@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using LittleByte.Asp.Exceptions;
+using LittleByte.Asp.Test.Utilities;
 using LittleByte.Asp.Test.Utility;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
@@ -69,6 +70,25 @@ namespace SocialChef.Business.Test.Services
             await testObj.DeleteAsync(entity.ID);
 
             Assert.False(dbContext.Recipes.Any());
+        }
+
+        [Test]
+        public async Task GetAll_None_ReturnEmpty()
+        {
+            var response = await testObj.GetAsync();
+
+            Assert.AreEqual(0, response.Count);
+        }
+
+        [Test]
+        public async Task GetAll_Exists_ReturnRecipes()
+        {
+            const int count = 3;
+            count.Do(() => dbContext.AddAndSave(new Recipe("test")));
+
+            var response = await testObj.GetAsync();
+
+            Assert.AreEqual(count, response.Count);
         }
     }
 }

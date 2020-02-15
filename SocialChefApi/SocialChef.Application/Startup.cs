@@ -1,11 +1,11 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using IdentityServer4.AccessTokenValidation;
 using JetBrains.Annotations;
 using LittleByte.Asp.Application;
 using LittleByte.Asp.Configuration;
 using LittleByte.Asp.Json;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 using SocialChef.Application.ConfigOptions;
 
 namespace SocialChef.Application
@@ -44,6 +45,7 @@ namespace SocialChef.Application
             if(env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                IdentityModelEventSource.ShowPII = true;
             }
 
             app.UseCors(policy => policy.AllowAnyOrigin());
@@ -62,19 +64,16 @@ namespace SocialChef.Application
 
         private void AddAuthentication(IServiceCollection services)
         {
+            var identityOptions = configuration.GetSection<IdentityOptions>(IdentityOptions.Key);
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
-            {
-                var identityOptions = configuration.GetSection<IdentityOptions>(IdentityOptions.Key);
-
-                o.Authority = identityOptions.Address;
-                o.Audience = "api1";
-                o.RequireHttpsMetadata = false;
-            });
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = identityOptions.Address;
+                    options.ApiName = "api1";
+                    // TODO: Remove if not develop
+                    options.RequireHttpsMetadata = false;
+                });
         }
 
         private static Task WriteHealthResponse(HttpContext httpContext, HealthReport report)

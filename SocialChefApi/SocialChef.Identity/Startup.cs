@@ -1,7 +1,9 @@
-﻿using LittleByte.Asp.Configuration;
+﻿using IdentityServer4.EntityFramework.DbContexts;
+using LittleByte.Asp.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,8 +34,8 @@ namespace SocialChef.Identity
             var (connectionString, migrationsAssembly) = GetDatabaseOptions();
 
             ConfigureDatabase(services, connectionString, migrationsAssembly);
-
             ConfigureIdentityServer(services, connectionString, migrationsAssembly);
+            SeedDatabase(services);
 
             AddGoogleAuthentication(services);
         }
@@ -47,8 +49,8 @@ namespace SocialChef.Identity
             }
 
             app.UseStaticFiles();
-            app.UseRouting();
             app.UseIdentityServer();
+            app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
         }
@@ -109,13 +111,23 @@ namespace SocialChef.Identity
             builder.AddDeveloperSigningCredential();
         }
 
-        private static void SeedDatabase()
+        private static void SeedDatabase(IServiceCollection services)
         {
-            //using(var scope = services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>().CreateScope())
-            //{
-            //    var context = scope.ServiceProvider.GetService<ConfigurationDbContext>();
-            //    SeedData.EnsureSeedData(context, scope);
-            //}
+            using var scope = services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>().CreateScope();
+
+            UpdateDatabase<ApplicationDbContext>(scope);
+            var configurationDbContext = UpdateDatabase<ConfigurationDbContext>(scope);
+            UpdateDatabase<PersistedGrantDbContext>(scope);
+
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            SeedData.EnsureSeedData(userManager, configurationDbContext);
+
+            static T UpdateDatabase<T>(IServiceScope scope) where T : DbContext
+            {
+                var dbContext = scope.ServiceProvider.GetService<T>();
+                dbContext.Database.Migrate();
+                return dbContext;
+            }
         }
 
         private void AddGoogleAuthentication(IServiceCollection services)

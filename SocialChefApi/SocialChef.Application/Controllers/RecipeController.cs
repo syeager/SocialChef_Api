@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
 using LittleByte.Asp.Application;
 using Microsoft.AspNetCore.Mvc;
+using NJsonSchema.Annotations;
 using SocialChef.Business.DTOs;
 using SocialChef.Business.Requests;
 using SocialChef.Business.Services;
@@ -30,10 +32,18 @@ namespace SocialChef.Application.Controllers
         [HttpGet("{recipeID}")]
         [ResponseType(HttpStatusCode.OK, typeof(RecipeDto))]
         [ResponseType(HttpStatusCode.NotFound)]
-        public async Task<ApiResult<RecipeDto>> Get([Required] string recipeID)
+        public async Task<ApiResult<RecipeDto>> Get([Required, NotNull] string recipeID)
         {
             var dto = await recipeService.GetAsync(recipeID);
             return new OkResult<RecipeDto>(dto);
+        }
+
+        [ResponseType(HttpStatusCode.OK, typeof(RecipeDto[]))]
+        [ResponseType(HttpStatusCode.NotFound)]
+        public async Task<ApiResult<IReadOnlyCollection<RecipeDto>>> Get()
+        {
+            var dto = await recipeService.GetAsync();
+            return new OkResult<IReadOnlyCollection<RecipeDto>>(dto);
         }
 
         [HttpDelete("{recipeID}")]

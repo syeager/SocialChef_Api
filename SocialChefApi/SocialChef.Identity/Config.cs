@@ -1,14 +1,13 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
+﻿using System.Collections.Generic;
+using IdentityServer4;
 using IdentityServer4.Models;
-using System.Collections.Generic;
 
 namespace SocialChef.Identity
 {
     public static class Config
     {
+        private const string Api1 = "api1";
+
         public static IEnumerable<IdentityResource> Ids =>
             new IdentityResource[]
             {
@@ -16,17 +15,37 @@ namespace SocialChef.Identity
                 new IdentityResources.Profile(),
             };
 
-
         public static IEnumerable<ApiResource> Apis =>
-            new ApiResource[]
+            new[]
             {
-                new ApiResource("api1", "My API #1")
+                new ApiResource(Api1, "My API #1")
             };
 
-
         public static IEnumerable<Client> Clients =>
-            new Client[]
+            new[]
             {
+                new Client
+                {
+                    ClientId = "postman-api",
+                    ClientName = "Postman Test Client",
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowAccessTokensViaBrowser = true,
+                    RequireConsent = false,
+                    RedirectUris = {"https://www.getpostman.com/oauth2/callback"},
+                    //NOTE: This link needs to match the link from the presentation layer - oidc-client
+                    //      otherwise IdentityServer won't display the link to go back to the site
+                    PostLogoutRedirectUris = {"https://www.getpostman.com"},
+                    AllowedCorsOrigins = {"https://www.getpostman.com"},
+                    EnableLocalLogin = true,
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        Api1,
+                    },
+                    ClientSecrets = new List<Secret> {new Secret("SomeValue".Sha256())}
+                },
                 // client credentials flow client
                 new Client
                 {
@@ -34,9 +53,9 @@ namespace SocialChef.Identity
                     ClientName = "Client Credentials Client",
 
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = { new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256()) },
+                    ClientSecrets = {new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256())},
 
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = {Api1}
                 },
 
                 // MVC client using code flow + pkce
@@ -47,14 +66,19 @@ namespace SocialChef.Identity
 
                     AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                     RequirePkce = true,
-                    ClientSecrets = { new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256()) },
+                    ClientSecrets = {new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256())},
 
-                    RedirectUris = { "http://localhost:5003/signin-oidc" },
-                    FrontChannelLogoutUri = "http://localhost:5003/signout-oidc",
-                    PostLogoutRedirectUris = { "http://localhost:5003/signout-callback-oidc" },
+                    RedirectUris = {"http://localhost:5002/signin-oidc"},
+                    FrontChannelLogoutUri = "http://localhost:5002/signout-oidc",
+                    PostLogoutRedirectUris = {"http://localhost:5002/signout-callback-oidc"},
 
                     AllowOfflineAccess = true,
-                    AllowedScopes = { "openid", "profile", "api1" }
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        Api1
+                    }
                 },
 
                 // SPA client using code flow + pkce
@@ -76,10 +100,15 @@ namespace SocialChef.Identity
                         "http://localhost:5002/popup.html",
                     },
 
-                    PostLogoutRedirectUris = { "http://localhost:5002/index.html" },
-                    AllowedCorsOrigins = { "http://localhost:5002" },
+                    PostLogoutRedirectUris = {"http://localhost:5002/index.html"},
+                    AllowedCorsOrigins = {"http://localhost:5002"},
 
-                    AllowedScopes = { "openid", "profile", "api1" }
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        Api1
+                    }
                 }
             };
     }

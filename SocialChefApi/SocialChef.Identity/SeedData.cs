@@ -4,47 +4,24 @@ using System.Security.Claims;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.EntityFramework.DbContexts;
-using IdentityServer4.EntityFramework.Interfaces;
 using IdentityServer4.EntityFramework.Mappers;
-using IdentityServer4.EntityFramework.Storage;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using SocialChef.Identity.Models;
 
 namespace SocialChef.Identity
 {
-    public class SeedData
+    public static class SeedData
     {
-        public static void EnsureSeedData(string connectionString)
+        public static void EnsureSeedData(UserManager<ApplicationUser> userManager, ConfigurationDbContext configurationDbContext)
         {
-            var services = new ServiceCollection();
-            services.AddOperationalDbContext(options => { options.ConfigureDbContext = db => db.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(typeof(SeedData).Assembly.FullName)); });
-            services.AddConfigurationDbContext(options => { options.ConfigureDbContext = db => db.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(typeof(SeedData).Assembly.FullName)); });
-
-            var serviceProvider = services.BuildServiceProvider();
-
-            using(var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                scope.ServiceProvider.GetService<PersistedGrantDbContext>().Database.Migrate();
-
-                var context = scope.ServiceProvider.GetService<ConfigurationDbContext>();
-                context.Database.Migrate();
-
-                EnsureSeedData(context, scope);
-            }
+            AddClients(configurationDbContext);
+            AddIDs(configurationDbContext);
+            AddResources(configurationDbContext);
+            AddUsers(userManager);
         }
 
-        public static void EnsureSeedData(IConfigurationDbContext context, IServiceScope scope)
-        {
-            AddClients(context);
-            AddIDs(context);
-            AddResources(context);
-            AddUsers(scope);
-        }
-
-        private static void AddClients(IConfigurationDbContext context)
+        private static void AddClients(ConfigurationDbContext context)
         {
             if(!context.Clients.Any())
             {
@@ -62,7 +39,7 @@ namespace SocialChef.Identity
             }
         }
 
-        private static void AddIDs(IConfigurationDbContext context)
+        private static void AddIDs(ConfigurationDbContext context)
         {
             if(!context.IdentityResources.Any())
             {
@@ -80,7 +57,7 @@ namespace SocialChef.Identity
             }
         }
 
-        private static void AddResources(IConfigurationDbContext context)
+        private static void AddResources(ConfigurationDbContext context)
         {
             if(!context.ApiResources.Any())
             {
@@ -98,23 +75,22 @@ namespace SocialChef.Identity
             }
         }
 
-        private static void AddUsers(IServiceScope scope)
+        private static void AddUsers(UserManager<ApplicationUser> userManager)
         {
-            var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var alice = userMgr.FindByNameAsync("alice").Result;
+            var alice = userManager.FindByNameAsync("alice").Result;
             if(alice == null)
             {
                 alice = new ApplicationUser
                 {
                     UserName = "alice"
                 };
-                var result = userMgr.CreateAsync(alice, "Pass123$").Result;
+                var result = userManager.CreateAsync(alice, "Pass123$").Result;
                 if(!result.Succeeded)
                 {
                     throw new Exception(result.Errors.First().Description);
                 }
 
-                result = userMgr.AddClaimsAsync(alice, new[]
+                result = userManager.AddClaimsAsync(alice, new[]
                 {
                     new Claim(JwtClaimTypes.Name, "Alice Smith"),
                     new Claim(JwtClaimTypes.GivenName, "Alice"),
@@ -136,20 +112,20 @@ namespace SocialChef.Identity
                 Log.Debug("alice already exists");
             }
 
-            var bob = userMgr.FindByNameAsync("bob").Result;
+            var bob = userManager.FindByNameAsync("bob").Result;
             if(bob == null)
             {
                 bob = new ApplicationUser
                 {
                     UserName = "bob"
                 };
-                var result = userMgr.CreateAsync(bob, "Pass123$").Result;
+                var result = userManager.CreateAsync(bob, "Pass123$").Result;
                 if(!result.Succeeded)
                 {
                     throw new Exception(result.Errors.First().Description);
                 }
 
-                result = userMgr.AddClaimsAsync(bob, new[]
+                result = userManager.AddClaimsAsync(bob, new[]
                 {
                     new Claim(JwtClaimTypes.Name, "Bob Smith"),
                     new Claim(JwtClaimTypes.GivenName, "Bob"),
