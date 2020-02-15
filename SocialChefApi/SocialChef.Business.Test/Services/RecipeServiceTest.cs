@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using LittleByte.Asp.Business;
 using LittleByte.Asp.Exceptions;
 using LittleByte.Asp.Test.Utilities;
 using LittleByte.Asp.Test.Utility;
@@ -75,20 +76,39 @@ namespace SocialChef.Business.Test.Services
         [Test]
         public async Task GetAll_None_ReturnEmpty()
         {
-            var response = await testObj.GetAsync();
+            var response = await testObj.GetAsync(new PageRequest());
 
             Assert.AreEqual(0, response.Count);
         }
 
         [Test]
-        public async Task GetAll_Exists_ReturnRecipes()
+        public async Task GetAll_FullPage_ReturnFullResults()
         {
-            const int count = 3;
-            count.Do(() => dbContext.AddAndSave(new Recipe("test")));
+            const int pageSize = 2;
+            (pageSize * 2).Do(i => dbContext.AddAndSave(new Recipe(i.ToString())));
 
-            var response = await testObj.GetAsync();
+            var request = new PageRequest(pageSize, 1);
 
-            Assert.AreEqual(count, response.Count);
+            var response = await testObj.GetAsync(request);
+
+            Assert.AreEqual(pageSize, response.Count);
+            for(var i = 0; i < pageSize; i++)
+            {
+                Assert.AreEqual((i + pageSize).ToString(), response[i].Name);
+            }
+        }
+
+        [Test]
+        public async Task GetAll_PartialPage_ReturnPartialResults()
+        {
+            const int pageSize = 2;
+            pageSize.Do(i => dbContext.AddAndSave(new Recipe(i.ToString())));
+
+            var request = new PageRequest(pageSize + 1);
+
+            var response = await testObj.GetAsync(request);
+
+            Assert.AreEqual(pageSize, response.Count);
         }
     }
 }

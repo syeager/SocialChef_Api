@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LittleByte.Asp.Business;
+using LittleByte.Asp.Database;
 using LittleByte.Asp.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using SocialChef.Business.DTOs;
@@ -13,7 +15,7 @@ namespace SocialChef.Business.Services
     {
         Task<RecipeDto> CreateAsync(CreateRecipeRequest request);
         Task<RecipeDto> GetAsync(string entityID);
-        Task<IReadOnlyList<RecipeDto>> GetAsync();
+        Task<IReadOnlyList<RecipeDto>> GetAsync(PageRequest request);
         Task DeleteAsync(string entityID);
     }
 
@@ -41,9 +43,11 @@ namespace SocialChef.Business.Services
             return ToDto(entity);
         }
 
-        public async Task<IReadOnlyList<RecipeDto>> GetAsync()
+        public async Task<IReadOnlyList<RecipeDto>> GetAsync(PageRequest request)
         {
-            var entities = await documentContext.Recipes.ToListAsync();
+            var entities = await documentContext.Recipes
+                .Page(request.PageSize, request.Page)
+                .ToListAsync();
             return entities.Select(ToDto).ToArray();
         }
 

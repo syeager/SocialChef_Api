@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
 using LittleByte.Asp.Application;
+using LittleByte.Asp.Business;
 using Microsoft.AspNetCore.Mvc;
 using NJsonSchema.Annotations;
 using SocialChef.Business.DTOs;
@@ -40,9 +41,9 @@ namespace SocialChef.Application.Controllers
 
         [ResponseType(HttpStatusCode.OK, typeof(RecipeDto[]))]
         [ResponseType(HttpStatusCode.NotFound)]
-        public async Task<ApiResult<IReadOnlyCollection<RecipeDto>>> Get()
+        public async Task<ApiResult<IReadOnlyCollection<RecipeDto>>> Get([FromQuery]PageRequest request)
         {
-            var dto = await recipeService.GetAsync();
+            var dto = await recipeService.GetAsync(request);
             return new OkResult<IReadOnlyCollection<RecipeDto>>(dto);
         }
 
