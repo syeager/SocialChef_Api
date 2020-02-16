@@ -48,7 +48,7 @@ namespace SocialChef.Application
                 IdentityModelEventSource.ShowPII = true;
             }
 
-            app.UseCors(policy => policy.AllowAnyOrigin());
+            app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             app.UseHttpsRedirection();
             app.UseHealthChecks("/health", new HealthCheckOptions {ResponseWriter = WriteHealthResponse});
             app.UseHttpExceptions();

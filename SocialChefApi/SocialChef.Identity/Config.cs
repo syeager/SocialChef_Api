@@ -86,7 +86,7 @@ namespace SocialChef.Identity
                 {
                     ClientId = "spa",
                     ClientName = "SPA Client",
-                    ClientUri = "http://identityserver.io",
+                    ClientUri = "http://localhost:8080",
 
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
@@ -94,14 +94,14 @@ namespace SocialChef.Identity
 
                     RedirectUris =
                     {
-                        "http://localhost:5002/index.html",
-                        "http://localhost:5002/callback.html",
-                        "http://localhost:5002/silent.html",
-                        "http://localhost:5002/popup.html",
+                        "http://localhost:8080",
+                        "http://localhost:8080/callback",
+                        "http://localhost:8080/silent",
+                        "http://localhost:8080/popup",
                     },
 
-                    PostLogoutRedirectUris = {"http://localhost:5002/index.html"},
-                    AllowedCorsOrigins = {"http://localhost:5002"},
+                    PostLogoutRedirectUris = {"http://localhost:8080"},
+                    AllowedCorsOrigins = {"http://localhost:8080"},
 
                     AllowedScopes =
                     {
