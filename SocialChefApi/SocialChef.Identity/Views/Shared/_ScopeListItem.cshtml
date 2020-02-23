@@ -28,7 +28,9 @@
     @if (Model.Description != null)
     {
         <div class="consent-description">
+            @* ReSharper disable Html.IdNotResolved *@
             <label for="scopes_@Model.Name">@Model.Description</label>
+            @* ReSharper restore Html.IdNotResolved *@
         </div>
     }
 </li>

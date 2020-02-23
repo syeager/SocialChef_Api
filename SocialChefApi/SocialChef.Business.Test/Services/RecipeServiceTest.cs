@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using LittleByte.Asp.Business;
 using LittleByte.Asp.Exceptions;
@@ -30,10 +31,26 @@ namespace SocialChef.Business.Test.Services
             testObj = new RecipeService(dbContext);
         }
 
-        [TestCase]
-        public async Task Create_Valid_CreateRecipe()
+        [Test]
+        public void Create_NullSteps_ThrowBadRequest()
         {
-            var request = new CreateRecipeRequest("test");
+            var request = new CreateRecipeRequest("test", null);
+
+            Assert.ThrowsAsync<BadRequestException>(() => testObj.CreateAsync(request));
+        }
+
+        [Test]
+        public void Create_EmptySteps_ThrowBadRequest()
+        {
+            var request = new CreateRecipeRequest("test", Array.Empty<string>());
+
+            Assert.ThrowsAsync<BadRequestException>(() => testObj.CreateAsync(request));
+        }
+
+        [Test]
+        public async Task Create_HasSteps_CreateRecipe()
+        {
+            var request = new CreateRecipeRequest("test", new[] {"a", "b"});
 
             var dto = await testObj.CreateAsync(request);
 
@@ -50,7 +67,7 @@ namespace SocialChef.Business.Test.Services
         [Test]
         public async Task Get_Exists_ReturnRecipe()
         {
-            var entity = dbContext.AddAndSave(new Recipe("test"));
+            var entity = dbContext.AddAndSave(CreateTestRecipe());
 
             var found = await testObj.GetAsync(entity.ID);
 
@@ -66,7 +83,7 @@ namespace SocialChef.Business.Test.Services
         [Test]
         public async Task Delete_Exists_DeleteRecipe()
         {
-            var entity = dbContext.AddAndSave(new Recipe("test"));
+            var entity = dbContext.AddAndSave(CreateTestRecipe());
 
             await testObj.DeleteAsync(entity.ID);
 
@@ -85,7 +102,7 @@ namespace SocialChef.Business.Test.Services
         public async Task GetAll_FullPage_ReturnFullResults()
         {
             const int pageSize = 2;
-            (pageSize * 2).Do(i => dbContext.AddAndSave(new Recipe(i.ToString())));
+            (pageSize * 2).Do(i => dbContext.AddAndSave(CreateTestRecipe(i.ToString())));
 
             var request = new PageRequest(pageSize, 1);
 
@@ -102,7 +119,7 @@ namespace SocialChef.Business.Test.Services
         public async Task GetAll_PartialPage_ReturnPartialResults()
         {
             const int pageSize = 2;
-            pageSize.Do(i => dbContext.AddAndSave(new Recipe(i.ToString())));
+            pageSize.Do(i => dbContext.AddAndSave(CreateTestRecipe(i.ToString())));
 
             var request = new PageRequest(pageSize + 1);
 
@@ -110,5 +127,7 @@ namespace SocialChef.Business.Test.Services
 
             Assert.AreEqual(pageSize, response.Count);
         }
+
+        private static Recipe CreateTestRecipe(string name = "test") => new Recipe(name, Array.Empty<string>());
     }
 }

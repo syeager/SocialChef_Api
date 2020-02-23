@@ -30,7 +30,13 @@ namespace SocialChef.Business.Services
 
         public async Task<RecipeDto> CreateAsync(CreateRecipeRequest request)
         {
-            var entity = new Recipe(request.Name);
+            if(request.Steps == null || request.Steps.Count == 0)
+            {
+                throw new BadRequestException("Can't create a recipe without steps.");
+            }
+
+            var entity = new Recipe(request.Name, request.Steps);
+
             documentContext.Recipes.Add(entity);
             await documentContext.SaveChangesAsync();
 

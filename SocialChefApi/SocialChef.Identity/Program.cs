@@ -7,7 +7,7 @@ using Serilog.Sinks.SystemConsole.Themes;
 
 namespace SocialChef.Identity
 {
-    public class Program
+    public static class Program
     {
         public static int Main(string[] args)
         {
@@ -45,7 +45,7 @@ namespace SocialChef.Identity
             }
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

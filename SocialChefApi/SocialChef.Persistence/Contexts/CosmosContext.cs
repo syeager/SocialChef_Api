@@ -32,6 +32,11 @@ namespace SocialChef.Persistence
             }
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Recipe>().OwnsMany(o => o.Steps);
+        }
+
         public static async Task Create(CosmosOptions options)
         {
             try

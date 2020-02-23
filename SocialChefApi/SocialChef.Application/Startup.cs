@@ -40,6 +40,7 @@ namespace SocialChef.Application
         }
 
         [UsedImplicitly]
+        #pragma warning disable CA1822
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if(env.IsDevelopment())
