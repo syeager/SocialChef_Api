@@ -78,7 +78,7 @@ namespace SocialChef.Business.Services
 
         private static RecipeDto ToDto(Recipe entity)
         {
-            return new RecipeDto(entity.ID, entity.Name);
+            return new RecipeDto(entity.ID, entity.Name, entity.Steps.Select(s => s.Instruction).ToArray());
         }
     }
 }
