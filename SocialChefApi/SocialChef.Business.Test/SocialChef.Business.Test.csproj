@@ -17,13 +17,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LittleByte\LittleByte.Asp.Test\LittleByte.Asp.Test.csproj" />
+    <ProjectReference Include="..\SocialChef.Business.Document\SocialChef.Business.Document.csproj" />
+    <ProjectReference Include="..\SocialChef.Business.Relational\SocialChef.Business.Relational.csproj" />
     <ProjectReference Include="..\SocialChef.Business\SocialChef.Business.csproj" />
-    <ProjectReference Include="..\SocialChef.Persistence\SocialChef.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace SocialChef.Business.Requests
@@ -6,6 +7,7 @@ namespace SocialChef.Business.Requests
     public class CreateRecipeRequest
     {
         public string Name { get; [UsedImplicitly]set; }
+        public Guid AuthorID { get; set; }
         public ICollection<string> Steps { get; [UsedImplicitly]set; }
 
         [UsedImplicitly]

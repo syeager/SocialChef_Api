@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using SocialChef.Persistence.Models;
 
-namespace SocialChef.Persistence
+namespace SocialChef.Persistence.Contexts
 {
     public class CosmosContext : DbContext
     {

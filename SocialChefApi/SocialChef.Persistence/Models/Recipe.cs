@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using LittleByte.Asp.Database;
 
-namespace SocialChef.Persistence
+namespace SocialChef.Persistence.Models
 {
     public class Recipe : Document
     {
         public string Name { get; [UsedImplicitly]set; }
+        public Guid ChefID { get; set; }
         public ICollection<RecipeStep> Steps { get; [UsedImplicitly]set; }
 
         [UsedImplicitly]

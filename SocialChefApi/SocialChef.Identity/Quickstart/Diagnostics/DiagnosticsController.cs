@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdentityServer4.Quickstart.UI
+namespace SocialChef.Identity.Quickstart.Diagnostics
 {
     [SecurityHeaders]
     [Authorize]

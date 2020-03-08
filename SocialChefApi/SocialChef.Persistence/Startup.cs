@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LittleByte.Asp.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SocialChef.Persistence.Contexts;
 
 namespace SocialChef.Persistence
 {
@@ -39,7 +40,7 @@ namespace SocialChef.Persistence
 
             Task<bool> HealthCheck(CosmosContext context, CancellationToken token)
             {
-                return context.CanConnectAsync(options.DatabaseName, options.ContainerName, token);
+                return context.CanCosmosConnectAsync(options.DatabaseName, options.ContainerName, token);
             }
         }
     }

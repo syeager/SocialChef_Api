@@ -7,13 +7,13 @@ using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Identity;
 using Serilog;
-using SocialChef.Identity.Models;
+using SocialChef.Data.User.Models;
 
 namespace SocialChef.Identity
 {
     public static class SeedData
     {
-        public static void EnsureSeedData(UserManager<ApplicationUser> userManager, ConfigurationDbContext configurationDbContext)
+        public static void EnsureSeedData(UserManager<User> userManager, ConfigurationDbContext configurationDbContext)
         {
             AddClients(configurationDbContext);
             AddIDs(configurationDbContext);
@@ -75,12 +75,12 @@ namespace SocialChef.Identity
             }
         }
 
-        private static void AddUsers(UserManager<ApplicationUser> userManager)
+        private static void AddUsers(UserManager<User> userManager)
         {
             var alice = userManager.FindByNameAsync("alice").Result;
             if(alice == null)
             {
-                alice = new ApplicationUser
+                alice = new User
                 {
                     UserName = "alice"
                 };
@@ -115,7 +115,7 @@ namespace SocialChef.Identity
             var bob = userManager.FindByNameAsync("bob").Result;
             if(bob == null)
             {
-                bob = new ApplicationUser
+                bob = new User
                 {
                     UserName = "bob"
                 };

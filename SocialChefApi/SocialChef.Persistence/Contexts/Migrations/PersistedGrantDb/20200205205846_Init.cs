@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace SocialChef.Identity.Data.Migrations.PersistedGrantDb
+namespace SocialChef.Persistence.Contexts.Migrations.PersistedGrantDb
 {
     public partial class Init : Migration
     {

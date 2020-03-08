@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ namespace SocialChef.Application.Controllers
         [HttpGet("{recipeID}")]
         [ResponseType(HttpStatusCode.OK, typeof(RecipeDto))]
         [ResponseType(HttpStatusCode.NotFound)]
-        public async Task<ApiResult<RecipeDto>> Get([Required, NotNull] string recipeID)
+        public async Task<ApiResult<RecipeDto>> Get([Required, NotNull] Guid recipeID)
         {
             var dto = await recipeService.GetAsync(recipeID);
             return new OkResult<RecipeDto>(dto);
@@ -50,7 +51,7 @@ namespace SocialChef.Application.Controllers
         [HttpDelete("{recipeID}")]
         [ResponseType(HttpStatusCode.NoContent)]
         [ResponseType(HttpStatusCode.NotFound)]
-        public async Task<ApiResult> Delete([Required] string recipeID)
+        public async Task<ApiResult> Delete([Required] Guid recipeID)
         {
             await recipeService.DeleteAsync(recipeID);
             return new DeletedResult<RecipeDto>(recipeID);

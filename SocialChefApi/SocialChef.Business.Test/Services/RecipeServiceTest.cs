@@ -3,13 +3,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using LittleByte.Asp.Business;
 using LittleByte.Asp.Exceptions;
+using LittleByte.Asp.Test.Database;
 using LittleByte.Asp.Test.Utilities;
-using LittleByte.Asp.Test.Utility;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
+using SocialChef.Business.Document.Contexts;
+using SocialChef.Business.Document.Models;
+using SocialChef.Business.Document.Options;
 using SocialChef.Business.Requests;
 using SocialChef.Business.Services;
-using SocialChef.Persistence;
 
 namespace SocialChef.Business.Test.Services
 {
@@ -61,7 +63,7 @@ namespace SocialChef.Business.Test.Services
         [Test]
         public void Get_None_ThrowNotFound()
         {
-            Assert.ThrowsAsync<NotFoundException>(() => testObj.GetAsync("abc"));
+            Assert.ThrowsAsync<NotFoundException>(() => testObj.GetAsync(Guid.Empty));
         }
 
         [Test]
@@ -77,7 +79,7 @@ namespace SocialChef.Business.Test.Services
         [Test]
         public void Delete_None_ThrowNotFound()
         {
-            Assert.ThrowsAsync<NotFoundException>(() => testObj.DeleteAsync("abc"));
+            Assert.ThrowsAsync<NotFoundException>(() => testObj.DeleteAsync(Guid.Empty));
         }
 
         [Test]

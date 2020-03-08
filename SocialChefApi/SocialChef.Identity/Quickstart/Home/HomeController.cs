@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace IdentityServer4.Quickstart.UI
+namespace SocialChef.Identity.Quickstart.Home
 {
     [SecurityHeaders]
     [AllowAnonymous]

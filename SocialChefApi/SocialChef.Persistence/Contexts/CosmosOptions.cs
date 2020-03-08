@@ -1,4 +1,4 @@
-﻿namespace SocialChef.Persistence
+﻿namespace SocialChef.Persistence.Contexts
 {
     public class CosmosOptions
     {

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer4;
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
 using IdentityServer4.Models;
@@ -9,8 +10,9 @@ using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SocialChef.Identity.Quickstart.Consent;
 
-namespace IdentityServer4.Quickstart.UI.Device
+namespace SocialChef.Identity.Quickstart.Device
 {
     [Authorize]
     [SecurityHeaders]

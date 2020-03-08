@@ -1,22 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LittleByte.Asp.Business;
 using LittleByte.Asp.Database;
 using LittleByte.Asp.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using SocialChef.Business.Document.Contexts;
+using SocialChef.Business.Document.Models;
 using SocialChef.Business.DTOs;
 using SocialChef.Business.Requests;
-using SocialChef.Persistence;
 
 namespace SocialChef.Business.Services
 {
     public interface IRecipeService
     {
         Task<RecipeDto> CreateAsync(CreateRecipeRequest request);
-        Task<RecipeDto> GetAsync(string entityID);
+        Task<RecipeDto> GetAsync(Guid entityID);
         Task<IReadOnlyList<RecipeDto>> GetAsync(PageRequest request);
-        Task DeleteAsync(string entityID);
+        Task DeleteAsync(Guid entityID);
     }
 
     internal class RecipeService : IRecipeService
@@ -43,7 +45,7 @@ namespace SocialChef.Business.Services
             return ToDto(entity);
         }
 
-        public async Task<RecipeDto> GetAsync(string entityID)
+        public async Task<RecipeDto> GetAsync(Guid entityID)
         {
             var entity = await FindEntity(entityID);
             return ToDto(entity);
@@ -57,14 +59,14 @@ namespace SocialChef.Business.Services
             return entities.Select(ToDto).ToArray();
         }
 
-        public async Task DeleteAsync(string entityID)
+        public async Task DeleteAsync(Guid entityID)
         {
             var entity = await FindEntity(entityID);
             documentContext.Recipes.Remove(entity);
             await documentContext.SaveChangesAsync();
         }
 
-        private async Task<Recipe> FindEntity(string entityID)
+        private async Task<Recipe> FindEntity(Guid entityID)
         {
             var entity = await documentContext.Recipes.FindAsync(entityID);
 

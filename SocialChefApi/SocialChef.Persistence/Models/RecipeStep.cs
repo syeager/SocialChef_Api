@@ -1,4 +1,4 @@
-﻿namespace SocialChef.Persistence
+﻿namespace SocialChef.Persistence.Models
 {
     public class RecipeStep
     {

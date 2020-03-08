@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Server.IISIntegration;
 
-namespace IdentityServer4.Quickstart.UI
+namespace SocialChef.Identity.Quickstart.Account
 {
     public static class AccountOptions
     {

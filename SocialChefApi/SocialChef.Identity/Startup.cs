@@ -1,4 +1,5 @@
-﻿using IdentityServer4.EntityFramework.DbContexts;
+using System;
+using IdentityServer4.EntityFramework.DbContexts;
 using LittleByte.Asp.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SocialChef.Data.User.Contexts;
+using SocialChef.Data.User.Models;
 using SocialChef.Identity.ConfigOptions;
-using SocialChef.Identity.Data;
-using SocialChef.Identity.Models;
 
 namespace SocialChef.Identity
 {
@@ -32,7 +33,7 @@ namespace SocialChef.Identity
 
             var (connectionString, migrationsAssembly) = GetDatabaseOptions();
 
-            ConfigureDatabase(services, connectionString, migrationsAssembly);
+            ConfigureDatabase(services, connectionString);
             ConfigureIdentityServer(services, connectionString, migrationsAssembly);
             SeedDatabase(services);
 
@@ -46,6 +47,8 @@ namespace SocialChef.Identity
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
+
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             app.UseStaticFiles();
             app.UseIdentityServer();
@@ -78,13 +81,13 @@ namespace SocialChef.Identity
             });
         }
 
-        private static void ConfigureDatabase(IServiceCollection services, string connectionString, string migrationsAssembly)
+        private static void ConfigureDatabase(IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString, x => x.MigrationsAssembly(migrationsAssembly)));
+            services.AddDbContext<UserDbContext>(options =>
+                options.UseSqlServer(connectionString, x => x.MigrationsAssembly(typeof(UserDbContext).Assembly.FullName)));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+            services.AddIdentity<User, IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<UserDbContext>()
                 .AddDefaultTokenProviders();
         }
 
@@ -103,7 +106,7 @@ namespace SocialChef.Identity
                     options.ConfigureDbContext = b => b.UseSqlServer(connectionString, x => x.MigrationsAssembly(migrationsAssembly));
                     options.EnableTokenCleanup = true;
                 })
-                .AddAspNetIdentity<ApplicationUser>();
+                .AddAspNetIdentity<User>();
 
             // TODO: What are you?
             // not recommended for production - you need to store your key material somewhere secure
@@ -114,11 +117,11 @@ namespace SocialChef.Identity
         {
             using var scope = services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>().CreateScope();
 
-            UpdateDatabase<ApplicationDbContext>(scope);
+            UpdateDatabase<UserDbContext>(scope);
             var configurationDbContext = UpdateDatabase<ConfigurationDbContext>(scope);
             UpdateDatabase<PersistedGrantDbContext>(scope);
 
-            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
             SeedData.EnsureSeedData(userManager, configurationDbContext);
 
             static T UpdateDatabase<T>(IServiceScope scope) where T : DbContext

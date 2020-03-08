@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace SocialChef.Identity.Models
+namespace SocialChef.Persistence.Models
 {
     public class ApplicationUser: IdentityUser
     {

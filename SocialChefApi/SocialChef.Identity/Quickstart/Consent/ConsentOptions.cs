@@ -1,4 +1,4 @@
-﻿namespace IdentityServer4.Quickstart.UI
+﻿namespace SocialChef.Identity.Quickstart.Consent
 {
     public static class ConsentOptions
     {
