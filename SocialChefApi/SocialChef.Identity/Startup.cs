@@ -1,9 +1,11 @@
 using System;
 using IdentityServer4.AspNetIdentity;
 using IdentityServer4.EntityFramework.DbContexts;
+using LittleByte.Asp.Application;
 using LittleByte.Asp.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +30,11 @@ namespace SocialChef.Identity
 
         public void ConfigureServices(IServiceCollection services)
         {
+            if(!Environment.IsDevelopment())
+            {
+                services.ConfigureNonBreakingSameSiteCookies();
+            }
+
             services.AddControllersWithViews();
 
             ConfigureWindowsIisOptions(services);
@@ -47,6 +54,15 @@ namespace SocialChef.Identity
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                app.UseCookiePolicy(new CookiePolicyOptions
+                {
+                    Secure = CookieSecurePolicy.None,
+                    MinimumSameSitePolicy = SameSiteMode.Lax,
+                });
+            }
+            else
+            {
+                app.UseCookiePolicy();
             }
 
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());

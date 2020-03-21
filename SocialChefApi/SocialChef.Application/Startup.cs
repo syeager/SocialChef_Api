@@ -22,15 +22,22 @@ namespace SocialChef.Application
 {
     public class Startup
     {
+        private readonly IWebHostEnvironment environment;
         private readonly IConfiguration configuration;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
             this.configuration = configuration;
+            this.environment = environment;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            if(!environment.IsDevelopment())
+            {
+                services.ConfigureNonBreakingSameSiteCookies();
+            }
+
             services.AddHealthChecks();
             services.AddControllers();
             services.AddSwaggerDocument();
@@ -44,13 +51,22 @@ namespace SocialChef.Application
         }
 
         [UsedImplicitly]
-        #pragma warning disable CA1822
+#pragma warning disable CA1822
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if(env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 IdentityModelEventSource.ShowPII = true;
+                app.UseCookiePolicy(new CookiePolicyOptions
+                {
+                    Secure = CookieSecurePolicy.None,
+                    MinimumSameSitePolicy = SameSiteMode.Lax,
+                });
+            }
+            else
+            {
+                app.UseCookiePolicy();
             }
 
             app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
