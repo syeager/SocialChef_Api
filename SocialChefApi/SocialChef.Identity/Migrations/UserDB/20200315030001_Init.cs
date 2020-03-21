@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace SocialChef.Data.User.Migrations
+namespace SocialChef.Identity.Migrations.UserDB
 {
     public partial class Init : Migration
     {

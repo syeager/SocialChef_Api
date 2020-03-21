@@ -7,7 +7,7 @@ using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Identity;
 using Serilog;
-using SocialChef.Data.User.Models;
+using SocialChef.Identity.Models;
 
 namespace SocialChef.Identity
 {

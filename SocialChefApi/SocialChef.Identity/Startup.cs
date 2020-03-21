@@ -1,4 +1,5 @@
 using System;
+using IdentityServer4.AspNetIdentity;
 using IdentityServer4.EntityFramework.DbContexts;
 using LittleByte.Asp.Configuration;
 using Microsoft.AspNetCore.Builder;
@@ -8,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SocialChef.Data.User.Contexts;
-using SocialChef.Data.User.Models;
 using SocialChef.Identity.ConfigOptions;
+using SocialChef.Identity.Contexts;
+using SocialChef.Identity.Models;
 
 namespace SocialChef.Identity
 {
@@ -106,7 +107,8 @@ namespace SocialChef.Identity
                     options.ConfigureDbContext = b => b.UseSqlServer(connectionString, x => x.MigrationsAssembly(migrationsAssembly));
                     options.EnableTokenCleanup = true;
                 })
-                .AddAspNetIdentity<User>();
+                .AddAspNetIdentity<User>()
+                .AddProfileService<ProfileService<User>>();
 
             // TODO: What are you?
             // not recommended for production - you need to store your key material somewhere secure

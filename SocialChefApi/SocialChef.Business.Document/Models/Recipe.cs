@@ -16,8 +16,9 @@ namespace SocialChef.Business.Document.Models
             Steps = null!;
         }
 
-        public Recipe(string name, IEnumerable<string> steps)
+        public Recipe(Guid chefID, string name, IEnumerable<string> steps)
         {
+            ChefID = chefID;
             Name = name;
             Steps = steps.Select(s => new RecipeStep(s)).ToArray();
         }

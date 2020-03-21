@@ -1,28 +1,40 @@
-﻿using System.Threading;
+﻿using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using LittleByte.Asp.Database;
+using LittleByte.Asp.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SocialChef.Business.ConfigOptions;
 using SocialChef.Business.Document.Contexts;
 using SocialChef.Business.Document.Options;
 using SocialChef.Business.Relational.Contexts;
 using SocialChef.Business.Services;
-using SocialChef.Data.User.Contexts;
 
 namespace SocialChef.Business
 {
     public static class Startup
     {
-        public static void ConfigureServices(IServiceCollection serviceCollection, IConfiguration configuration)
+        public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            AddServices(serviceCollection);
-            AddDataStores(serviceCollection, configuration);
+            AddOptions(services, configuration);
+            AddServices(services);
+            AddDataStores(services, configuration);
+        }
+
+        private static void AddOptions(IServiceCollection services, IConfiguration configuration)
+        {
+            services.ConfigureOptions<IdentityOptions>(configuration, IdentityOptions.Key);
         }
 
         private static void AddServices(IServiceCollection services)
         {
+            services.AddTransient<HttpClient>();
+
             services.AddTransient<IRecipeService, RecipeService>();
+            services.AddTransient<IChefService, ChefService>();
+            services.AddTransient<IIdentityService, IdentityService>();
         }
 
         private static void AddDataStores(IServiceCollection services, IConfiguration configuration)
@@ -49,7 +61,6 @@ namespace SocialChef.Business
             var sqlConnectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddHealthChecks().AddDbContextCheck<SqlDbContext>("SqlDB");
             services.AddDbContext<SqlDbContext>(options => options.UseSqlServer(sqlConnectionString));
-            services.AddDbContext<UserDbContext>(options => options.UseSqlServer(sqlConnectionString));
         }
 
         private static CosmosOptions GetCosmosOptions(IServiceCollection services, IConfiguration configuration)

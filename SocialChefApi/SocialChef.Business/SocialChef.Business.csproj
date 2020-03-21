@@ -17,7 +17,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </ProjectReference>
-    <ProjectReference Include="..\SocialChef.Data.User\SocialChef.Data.User.csproj" />
+    <ProjectReference Include="..\SocialChef.Identity.Transport\SocialChef.Identity.Transport.csproj" />
   </ItemGroup>
 
   <ItemGroup>

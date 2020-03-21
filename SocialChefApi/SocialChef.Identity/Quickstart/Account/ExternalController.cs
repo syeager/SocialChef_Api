@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SocialChef.Data.User.Models;
+using SocialChef.Identity.Models;
 
 namespace SocialChef.Identity.Quickstart.Account
 {

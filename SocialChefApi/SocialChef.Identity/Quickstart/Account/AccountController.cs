@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SocialChef.Data.User.Models;
+using SocialChef.Identity.Models;
+using SocialChef.Identity.Transport;
 
 namespace SocialChef.Identity.Quickstart.Account
 {
@@ -41,6 +42,22 @@ namespace SocialChef.Identity.Quickstart.Account
             this.clientStore = clientStore;
             this.schemeProvider = schemeProvider;
             this.events = events;
+        }
+
+        // TODO: Restrict to Application server
+        [HttpPost]
+        public async Task<IActionResult> Register([FromBody]RegisterRequest request)
+        {
+            var user = new User(request.Email);
+
+            var response = await userManager.CreateAsync(user, request.Password);
+            if(!response.Succeeded)
+            {
+                return BadRequest(response.ToString());
+            }
+
+            var userDto = new UserDto(user.Id);
+            return Ok(userDto);
         }
 
         /// <summary>

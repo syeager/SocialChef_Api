@@ -14,8 +14,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
-using SocialChef.Application.ConfigOptions;
+using SocialChef.Business.ConfigOptions;
 
 namespace SocialChef.Application
 {
@@ -33,6 +34,9 @@ namespace SocialChef.Application
             services.AddHealthChecks();
             services.AddControllers();
             services.AddSwaggerDocument();
+
+            services.AddLogging(builder => { builder.AddApplicationInsights(""); });
+            services.AddApplicationInsightsTelemetry();
 
             AddAuthentication(services);
 

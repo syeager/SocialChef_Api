@@ -2,14 +2,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SocialChef.Identity.Models;
 
-namespace SocialChef.Data.User.Contexts
+namespace SocialChef.Identity.Contexts
 {
-    public class UserDbContext : IdentityDbContext<Models.User, IdentityRole<Guid>, Guid>
+    public class UserDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
-
         public UserDbContext(DbContextOptions<UserDbContext> options)
-            :base(options)
+            : base(options)
         {
         }
     }

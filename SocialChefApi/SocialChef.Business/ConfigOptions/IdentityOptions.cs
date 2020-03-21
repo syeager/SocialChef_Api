@@ -1,4 +1,4 @@
-﻿namespace SocialChef.Application.ConfigOptions
+﻿namespace SocialChef.Business.ConfigOptions
 {
     public class IdentityOptions
     {
