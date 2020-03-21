@@ -1,0 +1,27 @@
+/*
+    This is a configuration file for the SwitchStartupProject Visual Studio Extension
+    See https://bitbucket.org/thirteen/switchstartupproject/src/tip/Configuration.md
+*/
+{
+  "Version": 3,
+  "ListAllProjects": false,
+  "MultiProjectConfigurations": {
+    "Identity+Application": {
+      "Projects": {
+        "SocialChef.Identity": {},
+        "SocialChef.Application": {
+          "StartProject": true
+        }
+      }
+    },
+    "Application+Identity": {
+      "Projects": {
+        "SocialChef.Identity": {
+          "StartProject": true
+
+        },
+        "SocialChef.Application": {}
+      }
+    }
+  }
+}
