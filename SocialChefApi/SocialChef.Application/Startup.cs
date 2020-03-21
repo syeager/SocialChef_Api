@@ -76,6 +76,7 @@ namespace SocialChef.Application
                 {
                     options.Authority = identityOptions.Address;
                     options.ApiName = "api1";
+                    options.SupportedTokens = SupportedTokens.Jwt;
                     // TODO: Remove if not develop
                     options.RequireHttpsMetadata = false;
                 });
