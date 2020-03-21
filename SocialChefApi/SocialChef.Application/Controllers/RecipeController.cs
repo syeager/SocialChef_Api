@@ -1,12 +1,10 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
 using LittleByte.Asp.Application;
 using LittleByte.Asp.Business;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NJsonSchema.Annotations;
 using SocialChef.Business.DTOs;
 using SocialChef.Business.Requests;
 using SocialChef.Business.Services;
@@ -35,7 +33,7 @@ namespace SocialChef.Application.Controllers
         [HttpGet("{recipeID}")]
         [ResponseType(HttpStatusCode.OK, typeof(RecipeDto))]
         [ResponseType(HttpStatusCode.NotFound)]
-        public async Task<ApiResult<RecipeDto>> Get([Required, NotNull] Guid recipeID)
+        public async Task<ApiResult<RecipeDto>> Get(Guid recipeID)
         {
             var dto = await recipeService.GetAsync(recipeID);
             return new OkResult<RecipeDto>(dto);
@@ -44,7 +42,7 @@ namespace SocialChef.Application.Controllers
         [AllowAnonymous]
         [ResponseType(HttpStatusCode.OK, typeof(PageResponse<RecipeDto>))]
         [ResponseType(HttpStatusCode.NotFound)]
-        public async Task<ApiResult<PageResponse<RecipeDto>>> Get([FromQuery]PageRequest request)
+        public async Task<ApiResult<PageResponse<RecipeDto>>> Get([FromQuery] PageRequest request)
         {
             var dto = await recipeService.GetAsync(request);
             return new OkResult<PageResponse<RecipeDto>>(dto);
@@ -53,7 +51,7 @@ namespace SocialChef.Application.Controllers
         [HttpDelete("{recipeID}")]
         [ResponseType(HttpStatusCode.NoContent)]
         [ResponseType(HttpStatusCode.NotFound)]
-        public async Task<ApiResult> Delete([Required] Guid recipeID)
+        public async Task<ApiResult> Delete(Guid recipeID)
         {
             await recipeService.DeleteAsync(recipeID);
             return new DeletedResult<RecipeDto>(recipeID);

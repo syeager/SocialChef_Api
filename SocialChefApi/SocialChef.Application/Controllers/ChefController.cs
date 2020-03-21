@@ -34,8 +34,18 @@ namespace SocialChef.Application.Controllers
         [ResponseType(HttpStatusCode.OK, typeof(ChefDto))]
         public async Task<ApiResult<ChefDto>> Get()
         {
+            // TODO: Throw error.
             var userID = HttpContext.GetUserID();
             var dto = await chefService.GetChefByUserIDAsync(userID);
+            return new OkResult<ChefDto>(dto);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{chefID}")]
+        [ResponseType(HttpStatusCode.OK, typeof(ChefDto))]
+        public async Task<ApiResult<ChefDto>> Get(Guid chefID)
+        {
+            var dto = await chefService.GetChefAsync(chefID);
             return new OkResult<ChefDto>(dto);
         }
     }
