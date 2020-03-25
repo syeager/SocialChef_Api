@@ -30,6 +30,14 @@ namespace SocialChef.Application.Controllers
             return CreatedAtAction("Get", response);
         }
 
+        [HttpGet("user/{userID}")]
+        [ResponseType(HttpStatusCode.OK, typeof(ChefDto))]
+        public async Task<ApiResult<ChefDto>> GetByUser(Guid userID)
+        {
+            var dto = await chefService.GetChefByUserIDAsync(userID);
+            return new OkResult<ChefDto>(dto);
+        }
+
         [AllowAnonymous]
         [HttpGet("{chefID}")]
         [ResponseType(HttpStatusCode.OK, typeof(ChefDto))]
