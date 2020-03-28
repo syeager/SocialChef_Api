@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using LittleByte.Asp.Business;
 using LittleByte.Asp.Database;
 using LittleByte.Asp.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -19,14 +20,13 @@ namespace SocialChef.Business.Services
         ChefDto ToDto(Chef entity);
     }
 
-    internal class ChefService : IChefService
+    internal sealed class ChefService : EntityService<Chef, SqlDbContext>, IChefService
     {
-        private readonly SqlDbContext sqlDbContext;
         private readonly IIdentityService identityService;
 
         public ChefService(SqlDbContext sqlDbContext, IIdentityService identityService)
+        : base(sqlDbContext)
         {
-            this.sqlDbContext = sqlDbContext;
             this.identityService = identityService;
         }
 
@@ -35,14 +35,14 @@ namespace SocialChef.Business.Services
             var user = await identityService.RegisterAsync(request.Email, request.Password, request.PasswordConfirm);
 
             var chef = new Chef(user.ID, request.Name);
-            await sqlDbContext.AddAndSaveAsync(chef);
+            await DBContext.AddAndSaveAsync(chef);
 
             return ToDto(chef);
         }
 
         public async Task<ChefDto> GetChefAsync(Guid chefID)
         {
-            var chef = await sqlDbContext.Chefs.FindAsync(chefID);
+            var chef = await DBContext.Chefs.FindAsync(chefID);
             if(chef == null)
             {
                 throw new NotFoundException(typeof(ChefDto), chefID);
@@ -58,7 +58,7 @@ namespace SocialChef.Business.Services
                 throw new NotFoundException(typeof(UserDto), userID);
             }
 
-            var chef = await sqlDbContext.Chefs.FirstOrDefaultAsync(c => c.UserID == userID);
+            var chef = await DBContext.Chefs.FirstOrDefaultAsync(c => c.UserID == userID);
             if(chef == null)
             {
                 throw new NotFoundException(typeof(UserDto), userID);

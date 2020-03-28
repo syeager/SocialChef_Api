@@ -1,6 +1,6 @@
 using System.Net;
 using LittleByte.Asp.Exceptions;
-using LittleByte.Asp.Test.Mocks;
+using LittleByte.Asp.Test.Fakes;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using SocialChef.Business.ConfigOptions;
@@ -9,15 +9,15 @@ using SocialChef.Identity.Transport;
 
 namespace SocialChef.Identity.Test
 {
-    public class IdentityServiceTest
+    internal class IdentityServiceTest
     {
         private IdentityService testObj;
-        private MockHttpMessageHandler httpMessageHandler;
+        private FakeHttpMessageHandler httpMessageHandler;
 
         [SetUp]
         public void Setup()
         {
-            var httpClient = MockHttpMessageHandler.Create(out httpMessageHandler);
+            var httpClient = FakeHttpMessageHandler.Create(out httpMessageHandler);
             var identityOptions = Options.Create(new IdentityOptions {Address = "http://test"});
 
             testObj = new IdentityService(httpClient, identityOptions);

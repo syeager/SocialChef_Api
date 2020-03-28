@@ -38,13 +38,24 @@ namespace SocialChef.Application.Controllers
             var dto = await recipeService.GetAsync(recipeID);
             return new OkResult<RecipeDto>(dto);
         }
-
+        
         [AllowAnonymous]
+        [HttpGet("")]
         [ResponseType(HttpStatusCode.OK, typeof(PageResponse<RecipeDto>))]
         [ResponseType(HttpStatusCode.NotFound)]
         public async Task<ApiResult<PageResponse<RecipeDto>>> Get([FromQuery] PageRequest request)
         {
             var dto = await recipeService.GetAsync(request);
+            return new OkResult<PageResponse<RecipeDto>>(dto);
+        }
+        
+        [AllowAnonymous]
+        [HttpGet("chef/{chefID}")]
+        [ResponseType(HttpStatusCode.OK, typeof(PageResponse<RecipeDto>))]
+        [ResponseType(HttpStatusCode.NotFound)]
+        public async Task<ApiResult<PageResponse<RecipeDto>>> GetByChef(Guid chefID, [FromQuery] PageRequest request)
+        {
+            var dto = await recipeService.GetForChefAsync(chefID, request);
             return new OkResult<PageResponse<RecipeDto>>(dto);
         }
 

@@ -97,12 +97,6 @@ namespace SocialChef.Business.Test
         }
 
         [Test]
-        public void Get_None_ThrowNotFound()
-        {
-            Assert.ThrowsAsync<NotFoundException>(() => testObj.GetAsync(Guid.Empty));
-        }
-
-        [Test]
         public async Task Get_Exists_ReturnRecipe()
         {
             AddAndReturnChef();
@@ -112,22 +106,6 @@ namespace SocialChef.Business.Test
 
             Assert.AreEqual(entity.ID, found.ID);
             Assert.AreEqual(chef.ID, found.Chef.ID);
-        }
-
-        [Test]
-        public void Delete_None_ThrowNotFound()
-        {
-            Assert.ThrowsAsync<NotFoundException>(() => testObj.DeleteAsync(Guid.Empty));
-        }
-
-        [Test]
-        public async Task Delete_Exists_DeleteRecipe()
-        {
-            var entity = documentContext.AddAndSave(CreateTestRecipe());
-
-            await testObj.DeleteAsync(entity.ID);
-
-            Assert.False(documentContext.Recipes.Any());
         }
 
         [Test]
@@ -172,11 +150,23 @@ namespace SocialChef.Business.Test
         }
 
         [Test]
+        public async Task GetAll_Valid_ReturnsCorrectPageCount()
+        {
+            AddAndReturnChef();
+            const int pageSize = 2;
+            (pageSize + 1).Do(i => documentContext.AddAndSave(CreateTestRecipe(i.ToString())));
+
+            var request = new PageRequest(pageSize);
+
+            var response = await testObj.GetAsync(request);
+
+            Assert.That(response.TotalPages, Is.EqualTo(2));
+        }
+
+        [Test]
         public void GetChefRecipes_NoChef_ThrowNotFound()
         {
-            var request = new GetChefsRecipesRequests(chef.ID);
-
-            Assert.ThrowsAsync<NotFoundException>(() => testObj.GetForChefAsync(request));
+            Assert.ThrowsAsync<NotFoundException>(() => testObj.GetForChefAsync(chef.ID, new PageRequest()));
         }
 
         [Test]
@@ -187,11 +177,9 @@ namespace SocialChef.Business.Test
             var recipe = new Recipe(chef.ID, "test", new[] {"a, b"});
             documentContext.AddAndSave(recipe);
 
-            var request = new GetChefsRecipesRequests(chef.ID);
+            var response = await testObj.GetForChefAsync(chef.ID, new PageRequest());
 
-            var response = await testObj.GetForChefAsync(request);
-
-            Assert.AreEqual(recipe.ID, response[0].ID);
+            Assert.AreEqual(recipe.ID, response.Results[0].ID);
         }
 
         private Recipe CreateTestRecipe(string name = "test") => new Recipe(chef.ID, name, Array.Empty<string>());
