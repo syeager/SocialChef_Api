@@ -23,10 +23,10 @@ namespace SocialChef.Application.Controllers
 
         [HttpPost]
         [ResponseType(HttpStatusCode.Created, typeof(RecipeDto))]
-        public async Task<ApiResult<RecipeDto>> Create(CreateRecipeRequest request)
+        public async Task<ActionResult<ApiResult<RecipeDto>>> Create(CreateRecipeRequest request)
         {
             var dto = await recipeService.CreateAsync(request);
-            return new CreatedResult<RecipeDto>(dto);
+            return CreatedAtAction("Get", new CreatedResult<RecipeDto>(dto));
         }
 
         [AllowAnonymous]
