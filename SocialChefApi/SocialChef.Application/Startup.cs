@@ -16,7 +16,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
-using SocialChef.Business.ConfigOptions;
+using SocialChef.Domain.Recipes;
 
 namespace SocialChef.Application
 {
@@ -47,7 +47,7 @@ namespace SocialChef.Application
 
             AddAuthentication(services);
 
-            Business.Startup.ConfigureServices(services, configuration);
+            Domain.Startup.ConfigureServices(services, configuration);
         }
 
         [UsedImplicitly]

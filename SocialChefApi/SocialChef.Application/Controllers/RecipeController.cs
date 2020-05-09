@@ -5,28 +5,30 @@ using LittleByte.Asp.Application;
 using LittleByte.Asp.Business;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SocialChef.Business.DTOs;
-using SocialChef.Business.Requests;
-using SocialChef.Business.Services;
+using SocialChef.Domain.DTOs;
+using SocialChef.Domain.Recipes;
 using Controller = LittleByte.Asp.Application.Controller;
 
 namespace SocialChef.Application.Controllers
 {
     public class RecipeController : Controller
     {
-        private readonly IRecipeService recipeService;
+        private readonly IRecipeCreator recipeCreator;
+        private readonly IRecipeFinder recipeFinder;
 
-        public RecipeController(IRecipeService recipeService)
+        public RecipeController(IRecipeCreator recipeCreator, IRecipeFinder recipeFinder)
         {
-            this.recipeService = recipeService;
+            this.recipeCreator = recipeCreator;
+            this.recipeFinder = recipeFinder;
         }
 
         [HttpPost]
         [ResponseType(HttpStatusCode.Created, typeof(RecipeDto))]
-        public async Task<ActionResult<ApiResult<RecipeDto>>> Create(CreateRecipeRequest request)
+        public async Task<ActionResult<ApiResult<RecipeDto>>> Create(RecipeDto dto)
         {
-            var dto = await recipeService.CreateAsync(request);
-            return CreatedAtAction("Get", new CreatedResult<RecipeDto>(dto));
+            var domainModel = await recipeCreator.CreateAsync(dto);
+
+            return CreatedAtAction("Get", new CreatedResult<RecipeDto>(domainModel));
         }
 
         [AllowAnonymous]
@@ -35,37 +37,44 @@ namespace SocialChef.Application.Controllers
         [ResponseType(HttpStatusCode.NotFound)]
         public async Task<ApiResult<RecipeDto>> Get(Guid recipeID)
         {
-            var dto = await recipeService.GetAsync(recipeID);
-            return new OkResult<RecipeDto>(dto);
+            var id = new Recipe.Guid(recipeID);
+            var domainModel = await recipeFinder.FindByIdAsync(id);
+
+            return new OkResult<RecipeDto>(domainModel);
         }
-        
+
         [AllowAnonymous]
         [HttpGet("")]
         [ResponseType(HttpStatusCode.OK, typeof(PageResponse<RecipeDto>))]
         [ResponseType(HttpStatusCode.NotFound)]
         public async Task<ApiResult<PageResponse<RecipeDto>>> Get([FromQuery] PageRequest request)
         {
-            var dto = await recipeService.GetAsync(request);
-            return new OkResult<PageResponse<RecipeDto>>(dto);
+            var dto = await recipeFinder.GetLatest(request);
+
+            var response = dto.CastResults(r => (RecipeDto)r);
+            return new OkResult<PageResponse<RecipeDto>>(response);
         }
-        
+
         [AllowAnonymous]
         [HttpGet("chef/{chefID}")]
         [ResponseType(HttpStatusCode.OK, typeof(PageResponse<RecipeDto>))]
         [ResponseType(HttpStatusCode.NotFound)]
         public async Task<ApiResult<PageResponse<RecipeDto>>> GetByChef(Guid chefID, [FromQuery] PageRequest request)
         {
-            var dto = await recipeService.GetForChefAsync(chefID, request);
-            return new OkResult<PageResponse<RecipeDto>>(dto);
+            var chefId = new Chef.Guid(chefID);
+            var dto = await recipeFinder.FindByChefAsync(chefId, request);
+
+            var response = dto.CastResults(r => (RecipeDto)r);
+            return new OkResult<PageResponse<RecipeDto>>(response);
         }
 
-        [HttpDelete("{recipeID}")]
-        [ResponseType(HttpStatusCode.NoContent)]
-        [ResponseType(HttpStatusCode.NotFound)]
-        public async Task<ApiResult> Delete(Guid recipeID)
-        {
-            await recipeService.DeleteAsync(recipeID);
-            return new DeletedResult<RecipeDto>(recipeID);
-        }
+        //[HttpDelete("{recipeID}")]
+        //[ResponseType(HttpStatusCode.NoContent)]
+        //[ResponseType(HttpStatusCode.NotFound)]
+        //public async Task<ApiResult> Delete(Guid recipeID)
+        //{
+        //    await recipeService.DeleteAsync(recipeID);
+        //    return new DeletedResult<RecipeDto>(recipeID);
+        //}
     }
 }

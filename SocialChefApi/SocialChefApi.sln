@@ -2,10 +2,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Business", "SocialChef.Business\SocialChef.Business.csproj", "{CB6E857E-BA1E-4685-8DC3-8BCA6223B3CD}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Business.Test", "SocialChef.Business.Test\SocialChef.Business.Test.csproj", "{68647DBD-0CBC-4DE1-96AB-4737D4D35FC3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Application", "SocialChef.Application\SocialChef.Application.csproj", "{7EA53AF9-90B6-4D23-9452-2CC97F973721}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LittleByte.Asp", "LittleByte\LittleByte.Asp\LittleByte.Asp.csproj", "{F7D6E032-7A14-4EE3-A3A6-1CA1E6B039F6}"
@@ -26,20 +22,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Business.Relatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Identity.Transport", "SocialChef.Identity.Transport\SocialChef.Identity.Transport.csproj", "{0C4C3CB8-8018-448D-8746-2CDEFC3FEE5E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Domain", "SocialChef.Domain\SocialChef.Domain.csproj", "{A8ACCE4F-3473-4894-AA83-CC892058A1BA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Domain.Test", "SocialChef.Domain.Test\SocialChef.Domain.Test.csproj", "{A61CB408-7282-46A8-A718-8164FEFF0EFB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CB6E857E-BA1E-4685-8DC3-8BCA6223B3CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CB6E857E-BA1E-4685-8DC3-8BCA6223B3CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CB6E857E-BA1E-4685-8DC3-8BCA6223B3CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CB6E857E-BA1E-4685-8DC3-8BCA6223B3CD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{68647DBD-0CBC-4DE1-96AB-4737D4D35FC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68647DBD-0CBC-4DE1-96AB-4737D4D35FC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68647DBD-0CBC-4DE1-96AB-4737D4D35FC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68647DBD-0CBC-4DE1-96AB-4737D4D35FC3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7EA53AF9-90B6-4D23-9452-2CC97F973721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7EA53AF9-90B6-4D23-9452-2CC97F973721}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EA53AF9-90B6-4D23-9452-2CC97F973721}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -68,6 +60,14 @@ Global
 		{0C4C3CB8-8018-448D-8746-2CDEFC3FEE5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C4C3CB8-8018-448D-8746-2CDEFC3FEE5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C4C3CB8-8018-448D-8746-2CDEFC3FEE5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8ACCE4F-3473-4894-AA83-CC892058A1BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8ACCE4F-3473-4894-AA83-CC892058A1BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8ACCE4F-3473-4894-AA83-CC892058A1BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8ACCE4F-3473-4894-AA83-CC892058A1BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A61CB408-7282-46A8-A718-8164FEFF0EFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A61CB408-7282-46A8-A718-8164FEFF0EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A61CB408-7282-46A8-A718-8164FEFF0EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A61CB408-7282-46A8-A718-8164FEFF0EFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

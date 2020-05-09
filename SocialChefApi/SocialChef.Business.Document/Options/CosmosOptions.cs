@@ -1,4 +1,4 @@
-﻿namespace SocialChef.Business.Document.Options
+﻿namespace SocialChef.Business.Document
 {
     public class CosmosOptions
     {

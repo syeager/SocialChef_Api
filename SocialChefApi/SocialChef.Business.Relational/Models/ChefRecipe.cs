@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SocialChef.Business.Relational.Models
+namespace SocialChef.Business.Relational
 {
     // TODO: Do I need this?
     public class ChefRecipe
@@ -8,7 +8,7 @@ namespace SocialChef.Business.Relational.Models
         public Guid ChefID { get; set; }
         public Guid RecipeID { get; set; }
 
-        public Chef? Chef { get; set; }
+        public ChefDao? Chef { get; set; }
 
         public ChefRecipe(Guid chefID, Guid recipeID)
         {

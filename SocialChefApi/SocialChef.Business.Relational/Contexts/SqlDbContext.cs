@@ -1,17 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SocialChef.Business.Relational.Models;
 
-namespace SocialChef.Business.Relational.Contexts
+namespace SocialChef.Business.Relational
 {
     public class SqlDbContext : DbContext
     {
-        public DbSet<Chef> Chefs { get; set; } = null!;
+        public DbSet<ChefDao> Chefs { get; set; } = null!;
         public DbSet<ChefRecipe> ChefRecipes { get; set; } = null!;
 
         public SqlDbContext(DbContextOptions<SqlDbContext> options)
-            : base(options)
-        {
-        }
+            : base(options) {}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

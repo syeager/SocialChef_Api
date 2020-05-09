@@ -4,37 +4,40 @@ using System.Threading.Tasks;
 using LittleByte.Asp.Application;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SocialChef.Business.DTOs;
-using SocialChef.Business.Requests;
-using SocialChef.Business.Services;
+using SocialChef.Domain.Chefs;
+using SocialChef.Domain.Recipes;
 using Controller = LittleByte.Asp.Application.Controller;
 
 namespace SocialChef.Application.Controllers
 {
     public class ChefController : Controller
     {
-        private readonly IChefService chefService;
+        private readonly IChefCreator chefCreator;
+        private readonly IChefFinder chefFinder;
 
-        public ChefController(IChefService chefService)
+        public ChefController(IChefCreator chefCreator, IChefFinder chefFinder)
         {
-            this.chefService = chefService;
+            this.chefCreator = chefCreator;
+            this.chefFinder = chefFinder;
         }
 
         [AllowAnonymous]
         [HttpPost]
         [ResponseType(HttpStatusCode.Created, typeof(ChefDto))]
-        public async Task<IActionResult> Create(CreateChefRequest request)
+        public async Task<ActionResult<ApiResult<ChefDto>>> Create(CreateChefRequest request)
         {
-            var dto = await chefService.CreateAsync(request);
-            var response = new CreatedResult<ChefDto>(dto);
-            return CreatedAtAction("Get", response);
+            var chef = await chefCreator.CreateAsync(request);
+
+            return CreatedAtAction("Get", new {chefID= chef.ID}, new CreatedResult<ChefDto>(chef));
         }
 
         [HttpGet("user/{userID}")]
         [ResponseType(HttpStatusCode.OK, typeof(ChefDto))]
         public async Task<ApiResult<ChefDto>> GetByUser(Guid userID)
         {
-            var dto = await chefService.GetChefByUserIDAsync(userID);
+            var userDomainId = new User.Guid(userID);
+
+            var dto = await chefFinder.FindByUserAsync(userDomainId);
             return new OkResult<ChefDto>(dto);
         }
 
@@ -43,7 +46,9 @@ namespace SocialChef.Application.Controllers
         [ResponseType(HttpStatusCode.OK, typeof(ChefDto))]
         public async Task<ApiResult<ChefDto>> Get(Guid chefID)
         {
-            var dto = await chefService.GetChefAsync(chefID);
+            var chefDomainId = new Chef.Guid(chefID);
+
+            var dto = await chefFinder.FindByIdAsync(chefDomainId);
             return new OkResult<ChefDto>(dto);
         }
     }

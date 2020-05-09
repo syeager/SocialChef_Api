@@ -2,16 +2,14 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using SocialChef.Business.Document.Models;
-using SocialChef.Business.Document.Options;
 
-namespace SocialChef.Business.Document.Contexts
+namespace SocialChef.Business.Document
 {
     public class CosmosContext : DbContext
     {
         private readonly CosmosOptions? options;
 
-        public DbSet<Recipe> Recipes { get; set; } = null!;
+        public DbSet<RecipeDao> Recipes { get; set; } = null!;
 
         private CosmosContext(IOptions<CosmosOptions> options)
         {
@@ -34,7 +32,15 @@ namespace SocialChef.Business.Document.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Recipe>().OwnsMany(o => o.Steps);
+            modelBuilder.Entity<RecipeDao>()
+                .OwnsMany(r => r.Sections, sectionBuilder =>
+                {
+                    sectionBuilder.OwnsMany(s => s.Steps, stepBuilder =>
+                    {
+                        stepBuilder.WithOwner();
+                        stepBuilder.HasKey(nameof(StepDao.Index));
+                    });
+                });
         }
 
         public static async Task Create(CosmosOptions options)

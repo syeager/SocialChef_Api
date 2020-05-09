@@ -9,8 +9,6 @@ namespace SocialChef.Identity.Contexts
     public class UserDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         public UserDbContext(DbContextOptions<UserDbContext> options)
-            : base(options)
-        {
-        }
+            : base(options) {}
     }
 }
