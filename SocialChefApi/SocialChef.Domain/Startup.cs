@@ -6,8 +6,8 @@ using LittleByte.Asp.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SocialChef.Business.Document;
-using SocialChef.Business.Relational;
+using SocialChef.Domain.Document;
+using SocialChef.Domain.Relational;
 using SocialChef.Domain.Chefs;
 using SocialChef.Domain.Recipes;
 

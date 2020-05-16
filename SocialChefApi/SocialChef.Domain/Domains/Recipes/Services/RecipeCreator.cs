@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using LittleByte.Asp.Database;
 using LittleByte.Asp.Exceptions;
-using SocialChef.Business.Document;
-using SocialChef.Business.Relational;
+using SocialChef.Domain.Document;
+using SocialChef.Domain.Relational;
 
 namespace SocialChef.Domain.Recipes
 {

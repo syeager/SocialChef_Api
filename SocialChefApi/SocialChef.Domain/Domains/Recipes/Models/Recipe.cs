@@ -2,7 +2,7 @@
 using System.Linq;
 using FluentValidation;
 using LittleByte.Domain;
-using SocialChef.Business.Document;
+using SocialChef.Domain.Document;
 
 namespace SocialChef.Domain.Recipes
 {

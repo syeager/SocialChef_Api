@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using LittleByte.Asp.Database;
-using SocialChef.Business.Relational;
+using SocialChef.Domain.Relational;
 using SocialChef.Domain.Recipes;
 
 namespace SocialChef.Domain.Chefs

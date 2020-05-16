@@ -3,17 +3,14 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SocialChef.Business.Relational;
 
-namespace SocialChef.Business.Relational.Migrations
+namespace SocialChef.Domain.Relational.Migrations
 {
     [DbContext(typeof(SqlDbContext))]
-    [Migration("20200315030242_Init")]
-    partial class Init
+    partial class SqlDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

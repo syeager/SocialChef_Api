@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace SocialChef.Business.Relational
+namespace SocialChef.Domain.Relational
 {
     public class SqlDbContext : DbContext
     {

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
-using SocialChef.Business.Relational;
+using SocialChef.Domain.Relational;
 using SocialChef.Domain.Chefs;
 using SocialChef.Domain.Recipes;
 

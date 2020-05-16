@@ -4,7 +4,7 @@ using LittleByte.Asp.Test.Database;
 using LittleByte.Asp.Test.Utilities;
 using LittleByte.Domain.Test.Utilities;
 using NUnit.Framework;
-using SocialChef.Business.Relational;
+using SocialChef.Domain.Relational;
 using SocialChef.Domain.Chefs;
 using SocialChef.Domain.Recipes;
 

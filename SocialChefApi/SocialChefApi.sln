@@ -16,9 +16,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		SocialChefApi.sln.startup.json = SocialChefApi.sln.startup.json
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Business.Document", "SocialChef.Business.Document\SocialChef.Business.Document.csproj", "{6C419138-62E5-439F-AA4B-3F0240233B26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Domain.Document", "SocialChef.Domain.Document\SocialChef.Domain.Document.csproj", "{6C419138-62E5-439F-AA4B-3F0240233B26}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Business.Relational", "SocialChef.Business.Relational\SocialChef.Business.Relational.csproj", "{0C302FA7-D0D9-4CB3-939D-5096CF3DE47D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Domain.Relational", "SocialChef.Domain.Relational\SocialChef.Domain.Relational.csproj", "{0C302FA7-D0D9-4CB3-939D-5096CF3DE47D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Identity.Transport", "SocialChef.Identity.Transport\SocialChef.Identity.Transport.csproj", "{0C4C3CB8-8018-448D-8746-2CDEFC3FEE5E}"
 EndProject

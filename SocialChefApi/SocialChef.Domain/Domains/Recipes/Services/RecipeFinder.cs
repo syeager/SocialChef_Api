@@ -4,8 +4,8 @@ using LittleByte.Asp.Business;
 using LittleByte.Asp.Database;
 using LittleByte.Asp.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using SocialChef.Business.Document;
-using SocialChef.Business.Relational;
+using SocialChef.Domain.Document;
+using SocialChef.Domain.Relational;
 
 namespace SocialChef.Domain.Recipes
 {

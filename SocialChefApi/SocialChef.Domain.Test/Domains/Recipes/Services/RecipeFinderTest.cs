@@ -6,8 +6,8 @@ using LittleByte.Asp.Test.Utilities;
 using LittleByte.Domain.Test.Utilities;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
-using SocialChef.Business.Document;
-using SocialChef.Business.Relational;
+using SocialChef.Domain.Document;
+using SocialChef.Domain.Relational;
 using SocialChef.Domain.Recipes;
 
 namespace SocialChef.Domain.Test.Services

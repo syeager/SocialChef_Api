@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using LittleByte.Asp.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using SocialChef.Business.Relational;
+using SocialChef.Domain.Relational;
 using SocialChef.Domain.Recipes;
 
 namespace SocialChef.Domain.Chefs

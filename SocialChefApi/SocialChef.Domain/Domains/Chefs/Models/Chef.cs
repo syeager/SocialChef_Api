@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using LittleByte.Domain;
-using SocialChef.Business.Relational;
+using SocialChef.Domain.Relational;
 
 namespace SocialChef.Domain.Recipes
 {
