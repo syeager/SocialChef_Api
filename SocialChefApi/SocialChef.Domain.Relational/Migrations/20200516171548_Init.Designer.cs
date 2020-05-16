@@ -10,18 +10,18 @@ using SocialChef.Domain.Relational;
 namespace SocialChef.Domain.Relational.Migrations
 {
     [DbContext(typeof(SqlDbContext))]
-    [Migration("20200315030242_Init")]
+    [Migration("20200516171548_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("SocialChef.Business.Relational.Models.Chef", b =>
+            modelBuilder.Entity("SocialChef.Domain.Relational.ChefDao", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -39,7 +39,7 @@ namespace SocialChef.Domain.Relational.Migrations
                     b.ToTable("Chefs");
                 });
 
-            modelBuilder.Entity("SocialChef.Business.Relational.Models.ChefRecipe", b =>
+            modelBuilder.Entity("SocialChef.Domain.Relational.ChefRecipe", b =>
                 {
                     b.Property<Guid>("ChefID")
                         .HasColumnType("uniqueidentifier");
@@ -52,9 +52,9 @@ namespace SocialChef.Domain.Relational.Migrations
                     b.ToTable("ChefRecipes");
                 });
 
-            modelBuilder.Entity("SocialChef.Business.Relational.Models.ChefRecipe", b =>
+            modelBuilder.Entity("SocialChef.Domain.Relational.ChefRecipe", b =>
                 {
-                    b.HasOne("SocialChef.Business.Relational.Models.Chef", "Chef")
+                    b.HasOne("SocialChef.Domain.Relational.ChefDao", "Chef")
                         .WithMany("Recipes")
                         .HasForeignKey("ChefID")
                         .OnDelete(DeleteBehavior.Cascade)

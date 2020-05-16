@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using SocialChef.Domain.Relational;
 
 namespace SocialChef.Domain.Relational.Migrations
 {
@@ -14,11 +15,11 @@ namespace SocialChef.Domain.Relational.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("SocialChef.Business.Relational.Models.Chef", b =>
+            modelBuilder.Entity("SocialChef.Domain.Relational.ChefDao", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
@@ -36,7 +37,7 @@ namespace SocialChef.Domain.Relational.Migrations
                     b.ToTable("Chefs");
                 });
 
-            modelBuilder.Entity("SocialChef.Business.Relational.Models.ChefRecipe", b =>
+            modelBuilder.Entity("SocialChef.Domain.Relational.ChefRecipe", b =>
                 {
                     b.Property<Guid>("ChefID")
                         .HasColumnType("uniqueidentifier");
@@ -49,9 +50,9 @@ namespace SocialChef.Domain.Relational.Migrations
                     b.ToTable("ChefRecipes");
                 });
 
-            modelBuilder.Entity("SocialChef.Business.Relational.Models.ChefRecipe", b =>
+            modelBuilder.Entity("SocialChef.Domain.Relational.ChefRecipe", b =>
                 {
-                    b.HasOne("SocialChef.Business.Relational.Models.Chef", "Chef")
+                    b.HasOne("SocialChef.Domain.Relational.ChefDao", "Chef")
                         .WithMany("Recipes")
                         .HasForeignKey("ChefID")
                         .OnDelete(DeleteBehavior.Cascade)
