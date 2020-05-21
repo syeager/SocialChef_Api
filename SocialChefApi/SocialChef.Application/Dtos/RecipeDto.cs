@@ -10,8 +10,8 @@ namespace SocialChef.Domain.DTOs
     public sealed class RecipeDto : Dto
     {
         public Guid ChefID { get; [UsedImplicitly] set; }
-        public string Name { get; [UsedImplicitly] set; }
-        public List<SectionDto> Sections { get; [UsedImplicitly] set; }
+        public string? Name { get; [UsedImplicitly] set; }
+        public List<SectionDto>? Sections { get; [UsedImplicitly] set; }
 
         [UsedImplicitly]
         public RecipeDto()
@@ -34,13 +34,13 @@ namespace SocialChef.Domain.DTOs
             return Recipe.Construct(
                     recipeDto.ID != Guid.Empty ? new Recipe.Guid(recipeDto.ID) : (Recipe.Guid?)null,
                     new Chef.Guid(recipeDto.ChefID),
-                    recipeDto.Name,
-                    recipeDto.Sections
+                    recipeDto.Name ?? string.Empty,
+                    recipeDto.Sections?
                         .Select(section => new Section(
-                            section.Name,
-                            section.Steps.Select(step => new Step(step.Instruction)
+                            section.Name ?? string.Empty,
+                            section.Steps.Select(step => new Step(step.Instruction ?? string.Empty)
                             ).ToList())
-                        ).ToList())
+                        ).ToList() ?? new List<Section>())
                 .GetModelOrThrow();
         }
 

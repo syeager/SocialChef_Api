@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -33,13 +34,21 @@ namespace SocialChef.Application
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             if(!environment.IsDevelopment())
             {
                 services.ConfigureNonBreakingSameSiteCookies();
             }
 
             services.AddHealthChecks();
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            });
             services.AddSwaggerDocument();
 
             services.AddLogging(builder => { builder.AddApplicationInsights(""); });
@@ -67,15 +76,16 @@ namespace SocialChef.Application
             else
             {
                 app.UseCookiePolicy();
+                app.UseHttpsRedirection();
             }
 
             app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-            app.UseHttpsRedirection();
             app.UseHealthChecks("/health", new HealthCheckOptions {ResponseWriter = WriteHealthResponse});
-            app.UseHttpExceptions();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseHttpExceptions();
+            app.UseModelValidationExceptions();
 
             app.UseOpenApi();
             app.UseSwaggerUi3();
