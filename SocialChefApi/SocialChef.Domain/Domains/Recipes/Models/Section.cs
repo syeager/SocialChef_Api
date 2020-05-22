@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FluentValidation;
+using JetBrains.Annotations;
 using LittleByte.Domain;
 
 namespace SocialChef.Domain.Recipes
@@ -24,6 +25,7 @@ namespace SocialChef.Domain.Recipes
         public string Name { get; }
         public IReadOnlyList<Step> Steps { get; }
 
+        [UsedImplicitly]
         private Section()
         {
             Name = null!;

@@ -26,6 +26,8 @@ namespace SocialChef.Domain.Recipes
 
         public readonly struct Guid
         {
+            public static readonly Guid Empty = new Guid(System.Guid.Empty);
+
             public System.Guid Value { get; }
 
             public Guid(System.Guid value)
@@ -36,21 +38,23 @@ namespace SocialChef.Domain.Recipes
 
         public Guid ID { get; }
         public Chef.Guid ChefID { get; }
+        public Guid VariantId { get; }
         public string Name { get; }
         public IReadOnlyList<Section> Sections { get; }
 
-        private Recipe(Guid id, Chef.Guid chefID, string name, IReadOnlyList<Section> sections)
+        private Recipe(Guid id, Chef.Guid chefID, string name, Guid variantId, IReadOnlyList<Section> sections)
         {
             ID = id;
             ChefID = chefID;
             Name = name.Trim();
+            VariantId = variantId;
             Sections = sections;
         }
 
-        public static ModelConstructResult<Recipe> Construct(Guid? id, Chef.Guid chefID, string name, IReadOnlyList<Section> sections)
+        public static ModelConstructResult<Recipe> Construct(Guid? id, Chef.Guid chefID, string name, Guid variantId, IReadOnlyList<Section> sections)
         {
             id ??= new Guid(System.Guid.NewGuid());
-            var recipe = new Recipe(id.Value, chefID, name, sections);
+            var recipe = new Recipe(id.Value, chefID, name, variantId, sections);
 
             var validation = Validator.Instance.Validate(recipe);
 
@@ -59,11 +63,12 @@ namespace SocialChef.Domain.Recipes
 
         public static implicit operator RecipeDao(Recipe recipe)
         {
-            int stepCount = 0;
+            var stepCount = 0;
             return new RecipeDao(
                 recipe.ID.Value,
                 recipe.ChefID.Value,
                 recipe.Name,
+                recipe.VariantId.Value,
                 recipe.Sections.Select(section => new SectionDao(
                         section.Name,
                         section.Steps.Select(step => new StepDao(++stepCount, step.Instruction)
@@ -79,6 +84,7 @@ namespace SocialChef.Domain.Recipes
                 new Guid(recipeDao.ID),
                 new Chef.Guid(recipeDao.ChefID),
                 recipeDao.Name,
+                new Guid(recipeDao.VariantId),
                 recipeDao.Sections
                     .Select(section => new Section(
                             section.Name,

@@ -16,7 +16,7 @@ namespace LittleByte.Domain.Test.Models
         [Test]
         public void Construct_Valid_Success()
         {
-            var results = Recipe.Construct(validID, validChefID, ValidModelValues.RecipeName, validSections);
+            var results = Recipe.Construct(validID, validChefID, ValidModelValues.RecipeName, Recipe.Guid.Empty, validSections);
 
             Assert.IsTrue(results.IsSuccess);
         }
@@ -26,7 +26,7 @@ namespace LittleByte.Domain.Test.Models
         {
             var chefId = new Chef.Guid(Guid.Empty);
 
-            var results = Recipe.Construct(validID, chefId, ValidModelValues.RecipeName, validSections);
+            var results = Recipe.Construct(validID, chefId, ValidModelValues.RecipeName, Recipe.Guid.Empty, validSections);
 
             results.AssertFirstError(nameof(Recipe.ChefID), nameof(NotEqualValidator));
         }
@@ -37,7 +37,7 @@ namespace LittleByte.Domain.Test.Models
         {
             var name = new string('a', charCount);
 
-            var results = Recipe.Construct(validID, validChefID, name, validSections);
+            var results = Recipe.Construct(validID, validChefID, name, Recipe.Guid.Empty, validSections);
 
             Assert.IsTrue(results.IsSuccess);
         }
@@ -49,7 +49,7 @@ namespace LittleByte.Domain.Test.Models
         {
             var name = new string(character, count);
 
-            var results = Recipe.Construct(validID, validChefID, name, validSections);
+            var results = Recipe.Construct(validID, validChefID, name, Recipe.Guid.Empty, validSections);
 
             results.AssertFirstError(nameof(Recipe.Name), nameof(LengthValidator));
         }
@@ -59,7 +59,7 @@ namespace LittleByte.Domain.Test.Models
         {
             var sections = Array.Empty<Section>();
 
-            var results = Recipe.Construct(validID, validChefID, ValidModelValues.RecipeName, sections);
+            var results = Recipe.Construct(validID, validChefID, ValidModelValues.RecipeName, Recipe.Guid.Empty, sections);
 
             results.AssertFirstError(nameof(Recipe.Sections), nameof(NotEmptyValidator));
         }
@@ -67,9 +67,19 @@ namespace LittleByte.Domain.Test.Models
         [Test]
         public void Construct_IDNull_NewID()
         {
-            var results = Recipe.Construct(null, validChefID, ValidModelValues.RecipeName, validSections);
+            var results = Recipe.Construct(null, validChefID, ValidModelValues.RecipeName, Recipe.Guid.Empty, validSections);
 
             Assert.AreNotEqual(Guid.Empty, results.Model!.ID);
+        }
+
+        [Test]
+        public void Construct_VariantNotEmpty_VariantIdSet()
+        {
+            Recipe.Guid variantId  = new Recipe.Guid(Guid.NewGuid());
+
+            var results = Recipe.Construct(null, validChefID, ValidModelValues.RecipeName, variantId, validSections);
+
+            Assert.AreEqual(variantId.Value, results.GetModelOrThrow().VariantId.Value);
         }
     }
 }
