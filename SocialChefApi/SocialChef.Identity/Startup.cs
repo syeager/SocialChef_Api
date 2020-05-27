@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 using SocialChef.Identity.ConfigOptions;
 using SocialChef.Identity.Contexts;
 using SocialChef.Identity.Models;
@@ -61,6 +62,7 @@ namespace SocialChef.Identity
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                IdentityModelEventSource.ShowPII = true;
                 app.UseCookiePolicy(new CookiePolicyOptions
                 {
                     Secure = CookieSecurePolicy.None,
@@ -70,6 +72,7 @@ namespace SocialChef.Identity
             else
             {
                 app.UseCookiePolicy();
+                app.UseHttpsRedirection();
             }
 
             app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
