@@ -1,15 +1,21 @@
 using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using IdentityServer4.AspNetIdentity;
 using IdentityServer4.EntityFramework.DbContexts;
 using LittleByte.Asp.Application;
 using LittleByte.Asp.Configuration;
+using LittleByte.Asp.Json;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using SocialChef.Identity.ConfigOptions;
 using SocialChef.Identity.Contexts;
@@ -35,6 +41,7 @@ namespace SocialChef.Identity
                 services.ConfigureNonBreakingSameSiteCookies();
             }
 
+            services.AddHealthChecks().AddDbContextCheck<UserDbContext>("SqlDB");
             services.AddControllersWithViews();
 
             ConfigureWindowsIisOptions(services);
@@ -65,8 +72,8 @@ namespace SocialChef.Identity
                 app.UseCookiePolicy();
             }
 
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-
+            app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            app.UseHealthChecks("/health", new HealthCheckOptions {ResponseWriter = WriteHealthResponse});
             app.UseStaticFiles();
             app.UseIdentityServer();
             app.UseRouting();
@@ -164,6 +171,21 @@ namespace SocialChef.Identity
                     options.ClientId = googleAuthOptions.ClientID;
                     options.ClientSecret = googleAuthOptions.ClientSecret;
                 });
+        }
+
+        private static Task WriteHealthResponse(HttpContext httpContext, HealthReport report)
+        {
+            httpContext.Response.ContentType = "application/json";
+            var responseJson = JsonSerializer.Serialize(report, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Converters =
+                {
+                    new JsonStringEnumConverter(),
+                    new TimespanConverter(@"ss\:fff"),
+                }
+            });
+            return httpContext.Response.WriteAsync(responseJson);
         }
     }
 }
