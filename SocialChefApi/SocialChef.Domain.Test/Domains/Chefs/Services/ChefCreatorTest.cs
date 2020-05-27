@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
 using LittleByte.Asp.Test.Database;
-using LittleByte.Domain.Test.Utilities;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
-using SocialChef.Domain.Relational;
 using SocialChef.Domain.Chefs;
-using SocialChef.Domain.Recipes;
+using SocialChef.Domain.Identity;
+using SocialChef.Domain.Relational;
+using SocialChef.Domain.Test.Utilities;
 
-namespace SocialChef.Domain.Test.Chefs
+namespace SocialChef.Domain.Test.Domains.Chefs.Services
 {
     // TODO: Identity server register fail - pass failure on
     public class ChefCreatorTest
@@ -38,10 +38,9 @@ namespace SocialChef.Domain.Test.Chefs
         [Test]
         public void Create_RegistrationFailure_NoChefCreated()
         {
-            var request = new CreateChefRequest();
             identityService.RegisterAsync("", "", "").ThrowsForAnyArgs<Exception>();
 
-            Assert.ThrowsAsync<Exception>(() => testObj.CreateAsync(request));
+            Assert.ThrowsAsync<Exception>(() => testObj.CreateAsync("", "", "", ""));
 
             Assert.IsFalse(sqlContext.Chefs.AnyAsync().Result);
         }
@@ -49,21 +48,18 @@ namespace SocialChef.Domain.Test.Chefs
         [Test]
         public async Task Create_Valid_ChefCreated()
         {
-            var request = new CreateChefRequest(
-                ValidModelValues.ChefName,
-                ValidModelValues.Email,
-                ValidModelValues.Password,
-                ValidModelValues.Password
-            );
-
-            var userId = new User.Guid(Guid.NewGuid());
+            var userId = new DomainGuid<User>(Guid.NewGuid());
             identityService.RegisterAsync(
-                request.Email,
-                request.Password,
-                request.PasswordConfirm
+                ValidProperties.Email,
+                ValidProperties.Password,
+                ValidProperties.Password
             ).Returns(new User(userId));
 
-            var user = await testObj.CreateAsync(request);
+            var user = await testObj.CreateAsync(
+                ValidProperties.ChefName,
+                ValidProperties.Email,
+                ValidProperties.Password,
+                ValidProperties.Password);
 
             Assert.AreEqual(userId.Value, user.UserId.Value);
         }

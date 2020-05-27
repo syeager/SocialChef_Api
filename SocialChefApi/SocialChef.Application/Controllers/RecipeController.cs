@@ -5,7 +5,7 @@ using LittleByte.Asp.Application;
 using LittleByte.Asp.Business;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SocialChef.Domain.DTOs;
+using SocialChef.Application.Dtos.Recipes;
 using SocialChef.Domain.Recipes;
 using Controller = LittleByte.Asp.Application.Controller;
 
@@ -24,11 +24,11 @@ namespace SocialChef.Application.Controllers
 
         [HttpPost]
         [ResponseType(HttpStatusCode.Created, typeof(RecipeDto))]
-        public async Task<ActionResult<ApiResult<RecipeDto>>> Create(RecipeDto dto)
+        public async Task<ApiResult<RecipeDto>> Create(RecipeDto dto)
         {
             var domainModel = await recipeCreator.CreateAsync(dto);
 
-            return CreatedAtAction("Get", new CreatedResult<RecipeDto>(domainModel));
+            return new CreatedResult<RecipeDto>(domainModel);
         }
 
         [AllowAnonymous]
@@ -37,35 +37,33 @@ namespace SocialChef.Application.Controllers
         [ResponseType(HttpStatusCode.NotFound)]
         public async Task<ApiResult<RecipeDto>> Get(Guid recipeID)
         {
-            var id = new Recipe.Guid(recipeID);
-            var domainModel = await recipeFinder.FindByIdAsync(id);
+            var domainModel = await recipeFinder.FindByIdAsync(recipeID);
 
             return new OkResult<RecipeDto>(domainModel);
         }
 
         [AllowAnonymous]
         [HttpGet("")]
-        [ResponseType(HttpStatusCode.OK, typeof(PageResponse<RecipeDto>))]
+        [ResponseType(HttpStatusCode.OK, typeof(PageResponse<RecipeSummaryDto>))]
         [ResponseType(HttpStatusCode.NotFound)]
-        public async Task<ApiResult<PageResponse<RecipeDto>>> Get([FromQuery] PageRequest request)
+        public async Task<ApiResult<PageResponse<RecipeSummaryDto>>> Get([FromQuery] PageRequest request)
         {
             var dto = await recipeFinder.GetLatest(request);
 
-            var response = dto.CastResults(r => (RecipeDto)r);
-            return new OkResult<PageResponse<RecipeDto>>(response);
+            var response = dto.CastResults(r => (RecipeSummaryDto)r);
+            return new OkResult<PageResponse<RecipeSummaryDto>>(response);
         }
 
         [AllowAnonymous]
         [HttpGet("chef/{chefID}")]
-        [ResponseType(HttpStatusCode.OK, typeof(PageResponse<RecipeDto>))]
+        [ResponseType(HttpStatusCode.OK, typeof(PageResponse<RecipeSummaryDto>))]
         [ResponseType(HttpStatusCode.NotFound)]
-        public async Task<ApiResult<PageResponse<RecipeDto>>> GetByChef(Guid chefID, [FromQuery] PageRequest request)
+        public async Task<ApiResult<PageResponse<RecipeSummaryDto>>> GetByChef(Guid chefID, [FromQuery] PageRequest request)
         {
-            var chefId = new Chef.Guid(chefID);
-            var dto = await recipeFinder.FindByChefAsync(chefId, request);
+            var dto = await recipeFinder.FindByChefAsync(chefID, request);
 
-            var response = dto.CastResults(r => (RecipeDto)r);
-            return new OkResult<PageResponse<RecipeDto>>(response);
+            var response = dto.CastResults(r => (RecipeSummaryDto)r);
+            return new OkResult<PageResponse<RecipeSummaryDto>>(response);
         }
 
         //[HttpDelete("{recipeID}")]

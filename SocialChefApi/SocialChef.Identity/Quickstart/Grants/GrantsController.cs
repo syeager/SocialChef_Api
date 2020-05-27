@@ -63,11 +63,11 @@ namespace SocialChef.Identity.Quickstart.Grants
             foreach(var grant in grants)
             {
                 var client = await clients.FindClientByIdAsync(grant.ClientId);
-                if (client != null)
+                if(client != null)
                 {
                     var resourcesByScope = await resources.FindResourcesByScopeAsync(grant.Scopes);
 
-                    var item = new GrantViewModel()
+                    var item = new GrantViewModel
                     {
                         ClientId = client.ClientId,
                         ClientName = client.ClientName ?? client.ClientId,

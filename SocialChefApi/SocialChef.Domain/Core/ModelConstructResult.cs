@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 
-namespace LittleByte.Domain
+namespace SocialChef.Domain
 {
     public class ModelConstructResult<T> where T : class
     {

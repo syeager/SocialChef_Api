@@ -9,7 +9,7 @@ namespace SocialChef.Domain.Relational
         public Guid UserID { get; set; }
         public string Name { get; set; }
 
-        public List<ChefRecipe>? Recipes { get; set; }
+        public List<RecipeSummaryDao>? Recipes { get; set; }
 
         public ChefDao(Guid userID, string name)
         {

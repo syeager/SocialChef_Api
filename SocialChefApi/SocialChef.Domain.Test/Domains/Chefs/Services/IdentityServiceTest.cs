@@ -3,10 +3,10 @@ using LittleByte.Asp.Exceptions;
 using LittleByte.Asp.Test.Fakes;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
-using SocialChef.Domain.Recipes;
+using SocialChef.Domain.Identity;
 using SocialChef.Identity.Transport;
 
-namespace SocialChef.Identity.Test
+namespace SocialChef.Domain.Test.Domains.Chefs.Services
 {
     internal class IdentityServiceTest
     {

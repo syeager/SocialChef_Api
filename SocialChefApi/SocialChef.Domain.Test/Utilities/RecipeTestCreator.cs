@@ -1,7 +1,8 @@
 ﻿using System;
+using SocialChef.Domain.Chefs;
 using SocialChef.Domain.Recipes;
 
-namespace LittleByte.Domain.Test.Utilities
+namespace SocialChef.Domain.Test.Utilities
 {
     public static class RecipeTestCreator
     {
@@ -10,19 +11,19 @@ namespace LittleByte.Domain.Test.Utilities
 
         private static ModelConstructResult<Recipe> CreateRecipe(Guid recipeId, Guid? chefId = null)
         {
-            var id = new Recipe.Guid(recipeId);
+            var id = new DomainGuid<Recipe>(recipeId);
             var recipe = Recipe.Construct(
                 id,
-                new Chef.Guid(chefId ?? Guid.NewGuid()),
-                ValidModelValues.RecipeName,
-                Recipe.Guid.Empty,
+                new DomainGuid<Chef>(chefId ?? Guid.NewGuid()),
+                ValidProperties.RecipeName,
+                DomainGuid<Recipe>.Empty,
                 new[]
                 {
                     new Section(
-                        ValidModelValues.SectionName,
+                        ValidProperties.SectionName,
                         new[]
                         {
-                            new Step(ValidModelValues.StepName),
+                            new Step(ValidProperties.StepName),
                         })
                 });
             return recipe;

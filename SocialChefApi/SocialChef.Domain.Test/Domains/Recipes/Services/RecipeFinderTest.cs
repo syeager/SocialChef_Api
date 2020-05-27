@@ -3,14 +3,15 @@ using System.Threading.Tasks;
 using LittleByte.Asp.Business;
 using LittleByte.Asp.Test.Database;
 using LittleByte.Asp.Test.Utilities;
-using LittleByte.Domain.Test.Utilities;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
+using SocialChef.Domain.Chefs;
 using SocialChef.Domain.Document;
-using SocialChef.Domain.Relational;
 using SocialChef.Domain.Recipes;
+using SocialChef.Domain.Relational;
+using SocialChef.Domain.Test.Utilities;
 
-namespace SocialChef.Domain.Test.Services
+namespace SocialChef.Domain.Test.Domains.Recipes.Services
 {
     public class RecipeFinderTest
     {
@@ -35,7 +36,7 @@ namespace SocialChef.Domain.Test.Services
         [Test]
         public void FindById_NoRecipe_ThrowNotFound()
         {
-            var id = new Recipe.Guid(Guid.Empty);
+            var id = new DomainGuid<Recipe>(Guid.Empty);
 
             AssertExtension.ThrowsNotFoundAsync<Recipe>(() => testObj.FindByIdAsync(id), id.Value);
         }
@@ -54,7 +55,7 @@ namespace SocialChef.Domain.Test.Services
         [Test]
         public void FindByChef_NoChef_ThrowNotFound()
         {
-            var chefID = new Chef.Guid(Guid.Empty);
+            var chefID = new DomainGuid<Chef>(Guid.Empty);
             var page = new PageRequest();
 
             AssertExtension.ThrowsNotFoundAsync<Chef>(() => testObj.FindByChefAsync(chefID, page), chefID.Value);
@@ -63,7 +64,7 @@ namespace SocialChef.Domain.Test.Services
         [Test]
         public async Task FindByChef_NoRecipe_ReturnEmpty()
         {
-            var chefID = new Chef.Guid(chefDao.ID);
+            var chefID = new DomainGuid<Chef>(chefDao.ID);
             var page = new PageRequest();
 
             var result = await testObj.FindByChefAsync(chefID, page);
@@ -74,7 +75,7 @@ namespace SocialChef.Domain.Test.Services
         [Test]
         public async Task FindByChef_HasRecipes_ReturnResults()
         {
-            var chefID = new Chef.Guid(chefDao.ID);
+            var chefID = new DomainGuid<Chef>(chefDao.ID);
             var page = new PageRequest();
 
             AddRecipeToDb(chefID.Value);
@@ -110,8 +111,8 @@ namespace SocialChef.Domain.Test.Services
             RecipeDao recipe = RecipeTestCreator.RecipeWithNewGuid(chefId).GetModelOrThrow();
             cosmosContext.AddAndSave(recipe);
 
-            var chefRecipe = new ChefRecipe(chefId, recipe.ID);
-            sqlContext.AddAndSave(chefRecipe);
+            var recipeSummary = new RecipeSummaryDao(recipe.ID, recipe.Name, chefId, ValidProperties.RecipeSummary.StepCount);
+            sqlContext.AddAndSave(recipeSummary);
         }
     }
 }

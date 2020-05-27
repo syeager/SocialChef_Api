@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace LittleByte.Domain.Test.Utilities
+namespace SocialChef.Domain.Test.Utilities
 {
     public static class ModelUtility
     {

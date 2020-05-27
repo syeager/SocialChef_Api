@@ -26,6 +26,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Domain", "Social
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Domain.Test", "SocialChef.Domain.Test\SocialChef.Domain.Test.csproj", "{A61CB408-7282-46A8-A718-8164FEFF0EFB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialChef.Application.Test", "SocialChef.Application.Test\SocialChef.Application.Test.csproj", "{C852FCEE-946D-46F0-A8D4-154B0FAE6952}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{A61CB408-7282-46A8-A718-8164FEFF0EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A61CB408-7282-46A8-A718-8164FEFF0EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A61CB408-7282-46A8-A718-8164FEFF0EFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C852FCEE-946D-46F0-A8D4-154B0FAE6952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C852FCEE-946D-46F0-A8D4-154B0FAE6952}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C852FCEE-946D-46F0-A8D4-154B0FAE6952}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C852FCEE-946D-46F0-A8D4-154B0FAE6952}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

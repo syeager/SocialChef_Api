@@ -2,15 +2,15 @@
 using System.Threading.Tasks;
 using LittleByte.Asp.Exceptions;
 using LittleByte.Asp.Test.Database;
-using LittleByte.Domain.Test.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using SocialChef.Domain.Document;
-using SocialChef.Domain.Relational;
 using SocialChef.Domain.Recipes;
+using SocialChef.Domain.Relational;
+using SocialChef.Domain.Test.Utilities;
 
-namespace SocialChef.Domain.Test.Services
+namespace SocialChef.Domain.Test.Domains.Recipes.Services
 {
     public class RecipeCreatorTest
     {
@@ -37,13 +37,20 @@ namespace SocialChef.Domain.Test.Services
             var request = RecipeTestCreator.RecipeWithEmptyGuid(chefId).GetModelOrThrow();
 
             var response = await testObj.CreateAsync(request!);
-            var chefRecipe = await sqlContext.ChefRecipes.FirstAsync();
-            var count = await sqlContext.ChefRecipes.CountAsync();
 
-            Assert.AreEqual(1, count);
             Assert.NotNull(response);
             Assert.AreNotEqual(request.ID.Value, response.ID.Value);
-            Assert.AreEqual(response.ID.Value, chefRecipe.RecipeID);
+        }
+
+        [Test]
+        public async Task Create_Valid_RecipeSummaryCreated()
+        {
+            var request = RecipeTestCreator.RecipeWithEmptyGuid(chefId).GetModelOrThrow();
+
+            var response = await testObj.CreateAsync(request!);
+            var recipeSummary = await sqlContext.RecipeSummaries.FirstAsync();
+
+            Assert.AreEqual(response.ID.Value, recipeSummary.ID);
         }
 
         [Test]

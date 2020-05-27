@@ -46,7 +46,7 @@ namespace SocialChef.Identity.Quickstart.Account
 
         // TODO: Restrict to Application server
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody]RegisterRequest request)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             var user = new User(request.Email);
 

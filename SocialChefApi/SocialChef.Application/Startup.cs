@@ -17,7 +17,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
-using SocialChef.Domain.Recipes;
+using SocialChef.Domain.Identity;
 
 namespace SocialChef.Application
 {
@@ -34,10 +34,7 @@ namespace SocialChef.Application
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.SuppressModelStateInvalidFilter = true;
-            });
+            services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
 
             if(!environment.IsDevelopment())
             {
@@ -45,11 +42,11 @@ namespace SocialChef.Application
             }
 
             services.AddHealthChecks();
-            services.AddControllers().AddJsonOptions(options =>
+            services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase; });
+            services.AddSwaggerDocument(settings =>
             {
-                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                settings.Title = "Social Chef API";
             });
-            services.AddSwaggerDocument();
 
             services.AddLogging(builder => { builder.AddApplicationInsights(""); });
             services.AddApplicationInsightsTelemetry();

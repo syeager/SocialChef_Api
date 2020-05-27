@@ -15,7 +15,7 @@ namespace SocialChef.Domain.Relational.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -37,26 +37,37 @@ namespace SocialChef.Domain.Relational.Migrations
                     b.ToTable("Chefs");
                 });
 
-            modelBuilder.Entity("SocialChef.Domain.Relational.ChefRecipe", b =>
+            modelBuilder.Entity("SocialChef.Domain.Relational.RecipeSummaryDao", b =>
                 {
-                    b.Property<Guid>("ChefID")
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("RecipeID")
+                    b.Property<Guid?>("ChefDaoID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ChefID", "RecipeID");
+                    b.Property<Guid>("ChefId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.ToTable("ChefRecipes");
+                    b.Property<string>("RecipeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StepCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ChefDaoID");
+
+                    b.ToTable("RecipeSummaries");
                 });
 
-            modelBuilder.Entity("SocialChef.Domain.Relational.ChefRecipe", b =>
+            modelBuilder.Entity("SocialChef.Domain.Relational.RecipeSummaryDao", b =>
                 {
-                    b.HasOne("SocialChef.Domain.Relational.ChefDao", "Chef")
+                    b.HasOne("SocialChef.Domain.Relational.ChefDao", null)
                         .WithMany("Recipes")
-                        .HasForeignKey("ChefID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ChefDaoID");
                 });
 #pragma warning restore 612, 618
         }
