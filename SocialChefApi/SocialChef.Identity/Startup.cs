@@ -51,7 +51,11 @@ namespace SocialChef.Identity
 
             ConfigureDatabase(services, connectionString);
             ConfigureIdentityServer(services, connectionString, migrationsAssembly);
-            SeedDatabase(services);
+
+            if(!Environment.IsDevelopment())
+            {
+                SeedDatabase(services);
+            }
 
             AddGoogleAuthentication(services);
         }
