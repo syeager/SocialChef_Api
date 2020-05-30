@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
 namespace SocialChef.Identity
@@ -7,6 +8,7 @@ namespace SocialChef.Identity
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine("[SocialChef] Program.Main");
             CreateHostBuilder(args).Build().Run();
         }
 

@@ -20,6 +20,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using SocialChef.Identity.ConfigOptions;
 using SocialChef.Identity.Contexts;
+using SocialChef.Identity.Extensions;
 using SocialChef.Identity.Models;
 
 namespace SocialChef.Identity
@@ -31,12 +32,14 @@ namespace SocialChef.Identity
 
         public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
+            Console.WriteLine("[SocialChef] Startup");
             Environment = environment;
             Configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            Console.WriteLine("[SocialChef] ConfigureServices");
             if(!Environment.IsDevelopment())
             {
                 services.ConfigureNonBreakingSameSiteCookies();
@@ -52,16 +55,17 @@ namespace SocialChef.Identity
             ConfigureDatabase(services, connectionString);
             ConfigureIdentityServer(services, connectionString, migrationsAssembly);
 
-            if(!Environment.IsDevelopment())
-            {
-                SeedDatabase(services);
-            }
+            //if(!Environment.IsDevelopment())
+            //{
+            //    SeedDatabase(services);
+            //}
 
             AddGoogleAuthentication(services);
         }
 
         public void Configure(IApplicationBuilder app)
         {
+            Console.WriteLine("[SocialChef] Configure");
             if(Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -122,9 +126,9 @@ namespace SocialChef.Identity
                 .AddDefaultTokenProviders();
         }
 
-        private static void ConfigureIdentityServer(IServiceCollection services, string connectionString, string migrationsAssembly)
+        private void ConfigureIdentityServer(IServiceCollection services, string connectionString, string migrationsAssembly)
         {
-            var builder = services.AddIdentityServer(options =>
+            services.AddIdentityServer(options =>
                 {
                     options.Events.RaiseErrorEvents = true;
                     options.Events.RaiseInformationEvents = true;
@@ -138,11 +142,8 @@ namespace SocialChef.Identity
                     options.EnableTokenCleanup = true;
                 })
                 .AddAspNetIdentity<User>()
-                .AddProfileService<ProfileService<User>>();
-
-            // TODO: What are you?
-            // not recommended for production - you need to store your key material somewhere secure
-            builder.AddDeveloperSigningCredential();
+                .AddProfileService<ProfileService<User>>()
+                .AddSigningCredentials(Configuration);
         }
 
         private static void SeedDatabase(IServiceCollection services)
