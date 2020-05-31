@@ -32,8 +32,6 @@ namespace SocialChef.Identity
                     AllowAccessTokensViaBrowser = true,
                     RequireConsent = false,
                     RedirectUris = {"https://www.getpostman.com/oauth2/callback"},
-                    //NOTE: This link needs to match the link from the presentation layer - oidc-client
-                    //      otherwise IdentityServer won't display the link to go back to the site
                     PostLogoutRedirectUris = {"https://www.getpostman.com"},
                     AllowedCorsOrigins = {"https://www.getpostman.com"},
                     EnableLocalLogin = true,
@@ -46,46 +44,10 @@ namespace SocialChef.Identity
                     },
                     ClientSecrets = new List<Secret> {new Secret("SomeValue".Sha256())}
                 },
-                // client credentials flow client
                 new Client
                 {
-                    ClientId = "client",
-                    ClientName = "Client Credentials Client",
-
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = {new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256())},
-
-                    AllowedScopes = {Api1}
-                },
-
-                // MVC client using code flow + pkce
-                new Client
-                {
-                    ClientId = "mvc",
-                    ClientName = "MVC Client",
-
-                    AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
-                    RequirePkce = true,
-                    ClientSecrets = {new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256())},
-
-                    RedirectUris = {"http://localhost:5002/signin-oidc"},
-                    FrontChannelLogoutUri = "http://localhost:5002/signout-oidc",
-                    PostLogoutRedirectUris = {"http://localhost:5002/signout-callback-oidc"},
-
-                    AllowOfflineAccess = true,
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        Api1
-                    }
-                },
-
-                // SPA client using code flow + pkce
-                new Client
-                {
-                    ClientId = "spa",
-                    ClientName = "SPA Client",
+                    ClientId = "spa-local",
+                    ClientName = "SPA Client Local",
                     ClientUri = "http://localhost:8080",
 
                     AllowedGrantTypes = GrantTypes.Code,
@@ -102,6 +64,34 @@ namespace SocialChef.Identity
 
                     PostLogoutRedirectUris = {"http://localhost:8080"},
                     AllowedCorsOrigins = {"http://localhost:8080"},
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        Api1
+                    }
+                },
+                new Client
+                {
+                    ClientId = "spa",
+                    ClientName = "SPA Client",
+                    ClientUri = "https://socialchefweb.z5.web.core.windows.net",
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    RequireClientSecret = false,
+
+                    RedirectUris =
+                    {
+                        "https://socialchefweb.z5.web.core.windows.net",
+                        "https://socialchefweb.z5.web.core.windows.net/callback",
+                        "https://socialchefweb.z5.web.core.windows.net/silent",
+                        "https://socialchefweb.z5.web.core.windows.net/popup",
+                    },
+
+                    PostLogoutRedirectUris = {"https://socialchefweb.z5.web.core.windows.net"},
+                    AllowedCorsOrigins = {"https://socialchefweb.z5.web.core.windows.net"},
 
                     AllowedScopes =
                     {

@@ -1,23 +1,16 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using IdentityServer4.AccessTokenValidation;
 using JetBrains.Annotations;
 using LittleByte.Asp.Application;
-using LittleByte.Asp.Configuration;
-using LittleByte.Asp.Json;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
-using SocialChef.Domain.Identity;
+using SocialChef.Application.Configuration;
 
 namespace SocialChef.Application
 {
@@ -43,15 +36,12 @@ namespace SocialChef.Application
 
             services.AddHealthChecks();
             services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase; });
-            services.AddSwaggerDocument(settings =>
-            {
-                settings.Title = "Social Chef API";
-            });
+            services.AddSwaggerDocument(settings => { settings.Title = "Social Chef API"; });
 
             services.AddLogging(builder => { builder.AddApplicationInsights(""); });
             services.AddApplicationInsightsTelemetry();
 
-            AddAuthentication(services);
+            services.AddIdentityServer(configuration, environment);
 
             Domain.Startup.ConfigureServices(services, configuration);
         }
@@ -77,7 +67,7 @@ namespace SocialChef.Application
             }
 
             app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-            app.UseHealthChecks("/health", new HealthCheckOptions {ResponseWriter = WriteHealthResponse});
+            app.UseHealthChecks();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -88,36 +78,6 @@ namespace SocialChef.Application
             app.UseSwaggerUi3();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-        }
-
-        private void AddAuthentication(IServiceCollection services)
-        {
-            var identityOptions = configuration.GetSection<IdentityOptions>(IdentityOptions.Key);
-
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-                .AddIdentityServerAuthentication(options =>
-                {
-                    options.Authority = identityOptions.Address;
-                    options.ApiName = "api1";
-                    options.SupportedTokens = SupportedTokens.Jwt;
-                    // TODO: Remove if not develop
-                    options.RequireHttpsMetadata = false;
-                });
-        }
-
-        private static Task WriteHealthResponse(HttpContext httpContext, HealthReport report)
-        {
-            httpContext.Response.ContentType = "application/json";
-            var responseJson = JsonSerializer.Serialize(report, new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                Converters =
-                {
-                    new JsonStringEnumConverter(),
-                    new TimespanConverter(@"ss\:fff"),
-                }
-            });
-            return httpContext.Response.WriteAsync(responseJson);
         }
     }
 }
