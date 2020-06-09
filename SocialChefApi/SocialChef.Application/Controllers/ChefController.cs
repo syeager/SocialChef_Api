@@ -54,11 +54,11 @@ namespace SocialChef.Application.Controllers
 
         // TODO: Handle too many chefs requested. Middleware?
         [AllowAnonymous]
-        [HttpGet("batch")]
+        [HttpPost("batch")]
         [ResponseType(HttpStatusCode.OK, typeof(ChefDto[]))]
         public async Task<ApiResult<IReadOnlyList<ChefDto>>> GetByBatch(List<Guid> chefIds)
         {
-            var chefs = await chefFinder.FindByIdsAsync(chefIds);
+            var chefs = await chefFinder.FindByIdsAsync(chefIds ?? new List<Guid>());
             var dto = chefs.Select(c => (ChefDto)c).ToList();
             return new OkResult<IReadOnlyList<ChefDto>>(dto);
         }
