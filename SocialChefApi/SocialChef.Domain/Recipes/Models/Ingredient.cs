@@ -2,14 +2,13 @@
 {
     public class Ingredient
     {
-        // TODO: Make IngriedientName.
-        public string Name { get; }
+        public IngredientName Name { get; }
         public Quantity Quantity { get; }
 
-        internal Ingredient(string name, Quantity quantity)
+        internal Ingredient(IngredientName name, Quantity quantity)
         {
+            Name = name;
             Quantity = quantity;
-            Name = name.Trim();
         }
     }
 }
