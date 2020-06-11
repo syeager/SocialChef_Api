@@ -18,9 +18,9 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Validators
             Assert.IsTrue(results.IsValid);
         }
 
-        [TestCase('a', RecipeNameValidator.LengthMin - 1)]
-        [TestCase(' ', RecipeNameValidator.LengthMin)]
-        [TestCase('a', RecipeNameValidator.LengthMax + 1)]
+        [TestCase('a', SectionNameValidator.LengthMin - 1)]
+        [TestCase(' ', SectionNameValidator.LengthMin)]
+        [TestCase('a', SectionNameValidator.LengthMax + 1)]
         public void Validate_NameLengthInvalid_ValidationError(char character, int count)
         {
             var name = new string(character, count);
