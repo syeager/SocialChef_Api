@@ -1,4 +1,6 @@
-﻿namespace SocialChef.Application.Dtos.Recipes
+﻿using SocialChef.Domain.Recipes;
+
+namespace SocialChef.Application.Dtos.Recipes
 {
     public class IngredientDto
     {
@@ -15,6 +17,20 @@
         {
             Name = name;
             Quantity = quantity;
+        }
+
+        public static implicit operator IngredientDto(Ingredient ingredient)
+        {
+            return new IngredientDto(
+                ingredient.Name,
+                ingredient.Quantity);
+        }
+
+        public static implicit operator Ingredient(IngredientDto ingredientDto)
+        {
+            return new Ingredient(
+                new IngredientName(ingredientDto.Name), 
+                ingredientDto.Quantity);
         }
     }
 }

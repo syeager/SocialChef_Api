@@ -111,7 +111,7 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Services
             RecipeDao recipe = RecipeTestCreator.RecipeWithNewGuid(chefId).GetModelOrThrow();
             cosmosContext.AddAndSave(recipe);
 
-            var recipeSummary = new RecipeSummaryDao(recipe.ID, recipe.Name, chefId, ValidProperties.RecipeSummary.StepCount);
+            var recipeSummary = new RecipeSummaryDao(recipe.ID, recipe.Name, chefId, Valid.RecipeSummary.StepCount);
             sqlContext.AddAndSave(recipeSummary);
         }
     }

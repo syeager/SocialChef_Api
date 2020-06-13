@@ -93,7 +93,7 @@ namespace SocialChef.Application.Test
             return Chef.Construct(
                     Guid.NewGuid(),
                     Guid.NewGuid(),
-                    ValidProperties.ChefName)
+                    Valid.ChefName)
                 .GetModelOrThrow();
         }
     }

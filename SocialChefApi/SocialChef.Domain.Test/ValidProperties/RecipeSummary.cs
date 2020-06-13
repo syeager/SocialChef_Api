@@ -1,6 +1,6 @@
 ﻿namespace SocialChef.Domain.Test.Utilities
 {
-    public static partial class ValidProperties
+    public static partial class Valid
     {
         public static class RecipeSummary
         {

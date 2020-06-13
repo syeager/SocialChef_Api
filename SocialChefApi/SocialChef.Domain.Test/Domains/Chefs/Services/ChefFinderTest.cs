@@ -104,7 +104,7 @@ namespace SocialChef.Domain.Test.Domains.Chefs.Services
 
         private ChefDao AddChefToDb()
         {
-            var chefDao = new ChefDao(Guid.NewGuid(), ValidProperties.ChefName);
+            var chefDao = new ChefDao(Guid.NewGuid(), Valid.ChefName);
             sqlContext.AddAndSave(chefDao);
             return chefDao;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using JetBrains.Annotations;
 using LittleByte.Asp.Business;
@@ -12,6 +13,7 @@ namespace SocialChef.Application.Dtos.Recipes
         public Guid ChefID { get; [UsedImplicitly] set; }
         public string Name { get; [UsedImplicitly] set; }
         public Guid? VariantId { get; [UsedImplicitly] set; }
+        public List<IngredientDto> Ingredients { get; [UsedImplicitly] set; }
         public List<SectionDto> Sections { get; [UsedImplicitly] set; }
 
         [UsedImplicitly]
@@ -19,15 +21,17 @@ namespace SocialChef.Application.Dtos.Recipes
             : base(Guid.Empty)
         {
             Name = null!;
+            Ingredients = null!;
             Sections = null!;
         }
 
-        public RecipeDto(Guid id, Guid chefID, string name, Guid variantId, List<SectionDto> sections)
+        public RecipeDto(Guid id, Guid chefID, string name, Guid variantId, List<IngredientDto> ingredients, List<SectionDto> sections)
             : base(id)
         {
             ChefID = chefID;
             Name = name;
             VariantId = variantId;
+            Ingredients = ingredients;
             Sections = sections;
         }
 
@@ -38,15 +42,17 @@ namespace SocialChef.Application.Dtos.Recipes
                     recipeDto.ChefID,
                     recipeDto.Name,
                     recipeDto.VariantId,
+                    recipeDto.Ingredients?.Cast<Ingredient>().ToArray() ?? Array.Empty<Ingredient>(),
                     recipeDto.Sections?
                         .Select(section => new Section(
                             new SectionName(section.Name),
                             section.Steps.Select(step => new Step(step.Instruction ?? string.Empty)
-                            ).ToList())
-                        ).ToList() ?? new List<Section>())
+                            ).ToArray())
+                        ).ToArray() ?? Array.Empty<Section>())
                 .GetModelOrThrow();
         }
 
+        [SuppressMessage("ReSharper", "SuspiciousTypeConversion.Global")]
         public static implicit operator RecipeDto(Recipe recipe)
         {
             var dto = new RecipeDto(
@@ -54,6 +60,7 @@ namespace SocialChef.Application.Dtos.Recipes
                 recipe.ChefID.Value,
                 recipe.Name,
                 recipe.VariantId.Value,
+                recipe.Ingredients.Cast<IngredientDto>().ToList(),
                 recipe.Sections.Select(s => new SectionDto(
                     s.Name,
                     s.Steps.Select(step => new StepDto(step.Instruction))

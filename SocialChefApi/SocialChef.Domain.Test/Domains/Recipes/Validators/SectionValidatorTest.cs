@@ -10,7 +10,7 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Validators
 {
     public class SectionValidatorTest
     {
-        private static readonly IReadOnlyList<Step> validSteps = new[] {new Step(ValidProperties.StepName)};
+        private static readonly IReadOnlyList<Step> validSteps = new[] {new Step(Valid.StepName)};
 
         private SectionValidator testObj;
 
@@ -23,7 +23,7 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Validators
         [Test]
         public void Construct_Valid_Success()
         {
-            var section = new Section(ValidProperties.SectionName, validSteps);
+            var section = new Section(Valid.SectionName, validSteps);
 
             var results = testObj.Validate(section);
 
@@ -34,7 +34,7 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Validators
         public void Construct_StepsEmpty_ValidationError()
         {
             var steps = Array.Empty<Step>();
-            var section = new Section(ValidProperties.SectionName, steps);
+            var section = new Section(Valid.SectionName, steps);
 
             var results = testObj.Validate(section);
 

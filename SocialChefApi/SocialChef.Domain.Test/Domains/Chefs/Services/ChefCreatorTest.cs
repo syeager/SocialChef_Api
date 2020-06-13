@@ -50,16 +50,16 @@ namespace SocialChef.Domain.Test.Domains.Chefs.Services
         {
             var userId = new DomainGuid<User>(Guid.NewGuid());
             identityService.RegisterAsync(
-                ValidProperties.Email,
-                ValidProperties.Password,
-                ValidProperties.Password
+                Valid.Email,
+                Valid.Password,
+                Valid.Password
             ).Returns(new User(userId));
 
             var user = await testObj.CreateAsync(
-                ValidProperties.ChefName,
-                ValidProperties.Email,
-                ValidProperties.Password,
-                ValidProperties.Password);
+                Valid.ChefName,
+                Valid.Email,
+                Valid.Password,
+                Valid.Password);
 
             Assert.AreEqual(userId.Value, user.UserId.Value);
         }

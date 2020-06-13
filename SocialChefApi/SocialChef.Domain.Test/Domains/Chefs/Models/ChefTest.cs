@@ -15,7 +15,7 @@ namespace SocialChef.Domain.Test.Domains.Chefs.Models
         [Test]
         public void Construct_Valid_Success()
         {
-            var results = Chef.Construct(validID.Value, validChefId, ValidProperties.ChefName);
+            var results = Chef.Construct(validID.Value, validChefId, Valid.ChefName);
 
             Assert.IsTrue(results.IsSuccess);
         }
@@ -23,7 +23,7 @@ namespace SocialChef.Domain.Test.Domains.Chefs.Models
         [Test]
         public void Construct_IDNull_NewID()
         {
-            var results = Chef.Construct(null, validChefId, ValidProperties.ChefName);
+            var results = Chef.Construct(null, validChefId, Valid.ChefName);
 
             Assert.IsTrue(results.IsSuccess);
             Assert.AreNotEqual(Guid.Empty, results.Model!.ID);
@@ -33,7 +33,7 @@ namespace SocialChef.Domain.Test.Domains.Chefs.Models
         public void Construct_EmptyUser_ValidationError()
         {
             var userId = new DomainGuid<User>(Guid.Empty);
-            var results = Chef.Construct(null, userId, ValidProperties.ChefName);
+            var results = Chef.Construct(null, userId, Valid.ChefName);
 
             results.AssertFirstError(nameof(Chef.UserId), nameof(NotEmptyValidator));
         }

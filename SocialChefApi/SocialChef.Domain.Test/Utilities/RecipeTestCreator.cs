@@ -15,15 +15,15 @@ namespace SocialChef.Domain.Test.Utilities
             var recipe = Recipe.Construct(
                 id,
                 new DomainGuid<Chef>(chefId ?? Guid.NewGuid()),
-                ValidProperties.RecipeName,
+                Valid.RecipeName,
                 DomainGuid<Recipe>.Empty,
                 new[]
                 {
                     new Section(
-                        ValidProperties.SectionName,
+                        Valid.SectionName,
                         new[]
                         {
-                            new Step(ValidProperties.StepName),
+                            new Step(Valid.StepName),
                         })
                 });
             return recipe;

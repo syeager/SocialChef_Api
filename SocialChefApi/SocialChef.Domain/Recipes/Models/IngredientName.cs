@@ -4,7 +4,7 @@
     {
         internal string Value { get; }
 
-        internal IngredientName(string value) => Value = value.Trim();
+        public IngredientName(string value) => Value = value.Trim();
 
         public override string ToString() => Value;
 
