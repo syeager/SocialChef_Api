@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using FluentValidation.Validators;
 using NUnit.Framework;
-using SocialChef.Domain.Chefs;
 using SocialChef.Domain.Recipes;
 using SocialChef.Domain.Test.Utilities;
 
@@ -10,14 +8,10 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Models
 {
     public class RecipeTest
     {
-        private static readonly DomainGuid<Recipe>? validID = new DomainGuid<Recipe>(Guid.NewGuid());
-        private static readonly DomainGuid<Chef> validChefID = new DomainGuid<Chef>(Guid.NewGuid());
-        private static readonly IReadOnlyList<Section> validSections = new[] {new Section(Valid.SectionName, new[] {new Step("instruction"),})};
-
         [Test]
         public void Construct_Valid_Success()
         {
-            var results = Recipe.Construct(validID, validChefID, Valid.Recipe.Name, DomainGuid<Recipe>.Empty, validSections);
+            var results = Valid.RecipeProps.Create(Valid.RecipeProps.Id);
 
             Assert.IsTrue(results.IsSuccess);
         }
@@ -27,7 +21,7 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Models
         {
             var chefId = Guid.Empty;
 
-            var results = Recipe.Construct(validID, chefId, Valid.Recipe.Name, DomainGuid<Recipe>.Empty, validSections);
+            var results = Valid.RecipeProps.Create(Valid.RecipeProps.Id, chefId);
 
             results.AssertFirstError(nameof(Recipe.ChefID), nameof(NotEqualValidator));
         }
@@ -37,7 +31,7 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Models
         {
             var sections = Array.Empty<Section>();
 
-            var results = Recipe.Construct(validID, validChefID, Valid.Recipe.Name, DomainGuid<Recipe>.Empty, sections);
+            var results = Valid.RecipeProps.Create(Valid.RecipeProps.Id, sections: sections);
 
             results.AssertFirstError(nameof(Recipe.Sections), nameof(NotEmptyValidator));
         }
@@ -45,7 +39,7 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Models
         [Test]
         public void Construct_IDNull_NewID()
         {
-            var results = Recipe.Construct(null, validChefID, Valid.Recipe.Name, DomainGuid<Recipe>.Empty, validSections);
+            var results = Valid.RecipeProps.Create(null);
 
             Assert.AreNotEqual(Guid.Empty, results.Model!.ID);
         }
@@ -55,7 +49,7 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Models
         {
             var variantId = Guid.NewGuid();
 
-            var results = Recipe.Construct(null, validChefID, Valid.Recipe.Name, variantId, validSections);
+            var results = Valid.RecipeProps.Create(Valid.RecipeProps.Id, variantId: variantId);
 
             Assert.AreEqual(variantId, results.GetModelOrThrow().VariantId.Value);
         }

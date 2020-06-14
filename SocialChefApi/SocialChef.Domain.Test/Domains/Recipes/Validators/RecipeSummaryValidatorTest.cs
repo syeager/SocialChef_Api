@@ -21,7 +21,7 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Validators
         [TestCase(-1)]
         public void Validate_StepCount0OrLess_FailWithRange(int count)
         {
-            var recipeSummary = new RecipeSummary(Guid.NewGuid(), Guid.NewGuid(), Valid.RecipeName, count);
+            var recipeSummary = new RecipeSummary(Guid.NewGuid(), Guid.NewGuid(), Valid.RecipeProps.Name, count);
 
             var result = testObj.Validate(recipeSummary);
 

@@ -34,7 +34,7 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Services
         [Test]
         public async Task Create_Valid_ReturnDto()
         {
-            var request = RecipeTestCreator.RecipeWithEmptyGuid(chefId).GetModelOrThrow();
+            var request = Valid.RecipeProps.Create(null, chefId).GetModelOrThrow();
 
             var response = await testObj.CreateAsync(request!);
 
@@ -45,7 +45,7 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Services
         [Test]
         public async Task Create_Valid_RecipeSummaryCreated()
         {
-            var request = RecipeTestCreator.RecipeWithEmptyGuid(chefId).GetModelOrThrow();
+            var request = Valid.RecipeProps.Create(null, chefId).GetModelOrThrow();
 
             var response = await testObj.CreateAsync(request!);
             var recipeSummary = await sqlContext.RecipeSummaries.FirstAsync();
@@ -56,7 +56,7 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Services
         [Test]
         public async Task Create_NonEmptyID_ReturnDtoWithNewId()
         {
-            var request = RecipeTestCreator.RecipeWithNewGuid(chefId).GetModelOrThrow();
+            var request = Valid.RecipeProps.Create(Guid.NewGuid(), chefId).GetModelOrThrow();
 
             var response = await testObj.CreateAsync(request!);
 
@@ -67,9 +67,9 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Services
         [Test]
         public void Create_NoChef_ThrowNotFound()
         {
-            var request = RecipeTestCreator.RecipeWithEmptyGuid(Guid.NewGuid()).GetModelOrThrow();
+            var request = Valid.RecipeProps.Create(null, Guid.NewGuid()).GetModelOrThrow();
 
-            Assert.ThrowsAsync<NotFoundException>(() => testObj.CreateAsync(request!));
+            Assert.ThrowsAsync<NotFoundException>(() => testObj.CreateAsync(request));
         }
     }
 }

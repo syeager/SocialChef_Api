@@ -33,6 +33,9 @@ namespace SocialChef.Domain.Document
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<RecipeDao>()
+                .OwnsMany(r => r.Ingredients);
+
+            modelBuilder.Entity<RecipeDao>()
                 .OwnsMany(r => r.Sections, sectionBuilder =>
                 {
                     sectionBuilder.OwnsMany(s => s.Steps, stepBuilder =>

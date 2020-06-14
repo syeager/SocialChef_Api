@@ -35,7 +35,6 @@ namespace SocialChef.Domain.Recipes
             return ModelConstructResult<Recipe>.Construct(recipe, validation);
         }
 
-        [SuppressMessage("ReSharper", "SuspiciousTypeConversion.Global")]
         public static implicit operator RecipeDao(Recipe recipe)
         {
             var stepCount = 0;
@@ -44,7 +43,7 @@ namespace SocialChef.Domain.Recipes
                 recipe.ChefID.Value,
                 recipe.Name,
                 recipe.VariantId.Value,
-                recipe.Ingredients.Cast<IngredientDao>().ToArray(),
+                recipe.Ingredients.Select(i => (IngredientDao)i).ToArray(),
                 recipe.Sections.Select(section => new SectionDao(
                         section.Name,
                         section.Steps.Select(step => new StepDao(++stepCount, step.Instruction)
@@ -62,7 +61,7 @@ namespace SocialChef.Domain.Recipes
                 recipeDao.ChefID,
                 new RecipeName(recipeDao.Name),
                 recipeDao.VariantId,
-                recipeDao.Ingredients.Cast<Ingredient>().ToArray(),
+                recipeDao.Ingredients.Select(i => (Ingredient)i).ToArray(),
                 recipeDao.Sections
                     .Select(section => new Section(
                             new SectionName(section.Name),

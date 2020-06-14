@@ -5,19 +5,21 @@ namespace SocialChef.Domain.Document
     public class IngredientDao
     {
         public string Name { get; set; }
-        public QuantityDao Quantity { get; set; }
+        public decimal Amount { get; set; }
+        public string Measurement { get; set; }
 
         [UsedImplicitly]
         public IngredientDao()
         {
             Name = null!;
-            Quantity = null!;
+            Measurement = null!;
         }
 
-        public IngredientDao(string name, QuantityDao quantity)
+        public IngredientDao(string name, decimal amount, string measurement)
         {
             Name = name;
-            Quantity = quantity;
+            Amount = amount;
+            Measurement = measurement;
         }
     }
 }

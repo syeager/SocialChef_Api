@@ -44,12 +44,12 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Services
         [Test]
         public async Task FindById_HasRecipe_ReturnRecipe()
         {
-            var recipe = RecipeTestCreator.RecipeWithNewGuid();
-            cosmosContext.AddAndSave((RecipeDao)recipe.Model!);
+            RecipeDao recipe = Valid.RecipeProps.Create(null).GetModelOrThrow();
+            cosmosContext.AddAndSave(recipe);
 
-            var result = await testObj.FindByIdAsync(recipe.Model!.ID);
+            var result = await testObj.FindByIdAsync(recipe.ID);
 
-            Assert.AreEqual(recipe.Model!.ID, result.ID);
+            Assert.AreEqual(recipe.ID, result.ID.Value);
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Services
 
         private void AddRecipeToDb(Guid chefId)
         {
-            RecipeDao recipe = RecipeTestCreator.RecipeWithNewGuid(chefId).GetModelOrThrow();
+            RecipeDao recipe = Valid.RecipeProps.Create(null, chefId).GetModelOrThrow();
             cosmosContext.AddAndSave(recipe);
 
             var recipeSummary = new RecipeSummaryDao(recipe.ID, recipe.Name, chefId, Valid.RecipeSummary.StepCount);

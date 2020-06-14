@@ -17,14 +17,15 @@ namespace SocialChef.Domain.Recipes
         {
             return new Ingredient(
                 new IngredientName(ingredientDao.Name),
-                ingredientDao.Quantity);
+                new Quantity(ingredientDao.Amount, ingredientDao.Measurement));
         }
 
         public static implicit operator IngredientDao(Ingredient ingredient)
         {
             return new IngredientDao(
                 ingredient.Name,
-                ingredient.Quantity);
+                ingredient.Quantity.Amount,
+                ingredient.Quantity.Measurement);
         }
     }
 }
