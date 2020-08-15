@@ -1,6 +1,7 @@
 using System.Text.Json;
 using JetBrains.Annotations;
 using LittleByte.Asp.Application;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
-using SocialChef.Application.Configuration;
 
 namespace SocialChef.Application
 {
@@ -41,7 +41,11 @@ namespace SocialChef.Application
             services.AddLogging(builder => { builder.AddApplicationInsights(""); });
             services.AddApplicationInsightsTelemetry();
 
-            services.AddIdentityServer(configuration, environment);
+            services.AddIdentityServer()
+                .AddApiAuthorization<Domain.Relational.ChefDao, Domain.Relational.SqlDbContext>();
+
+            services.AddAuthentication()
+                .AddIdentityServerJwt();
 
             Domain.Startup.ConfigureServices(services, configuration);
         }
@@ -70,6 +74,7 @@ namespace SocialChef.Application
             app.UseHealthChecks();
             app.UseRouting();
             app.UseAuthentication();
+            app.UseIdentityServer();
             app.UseAuthorization();
             app.UseHttpExceptions();
             app.UseModelValidationExceptions();
