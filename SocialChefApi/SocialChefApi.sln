@@ -8,8 +8,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LittleByte.Asp", "LittleByt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LittleByte.Asp.Test", "LittleByte\LittleByte.Asp.Test\LittleByte.Asp.Test.csproj", "{FEE0879C-3467-4D65-9FA8-29806CEB1F97}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Identity", "SocialChef.Identity\SocialChef.Identity.csproj", "{4DCA711B-AA43-4491-A836-ED8DECCD5FE8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A3D9A336-6015-40EB-8CC5-D98EFB97A3B9}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -26,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Domain", "Social
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Domain.Test", "SocialChef.Domain.Test\SocialChef.Domain.Test.csproj", "{A61CB408-7282-46A8-A718-8164FEFF0EFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialChef.Application.Test", "SocialChef.Application.Test\SocialChef.Application.Test.csproj", "{C852FCEE-946D-46F0-A8D4-154B0FAE6952}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Application.Test", "SocialChef.Application.Test\SocialChef.Application.Test.csproj", "{C852FCEE-946D-46F0-A8D4-154B0FAE6952}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,10 +44,6 @@ Global
 		{FEE0879C-3467-4D65-9FA8-29806CEB1F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEE0879C-3467-4D65-9FA8-29806CEB1F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEE0879C-3467-4D65-9FA8-29806CEB1F97}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4DCA711B-AA43-4491-A836-ED8DECCD5FE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4DCA711B-AA43-4491-A836-ED8DECCD5FE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4DCA711B-AA43-4491-A836-ED8DECCD5FE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4DCA711B-AA43-4491-A836-ED8DECCD5FE8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6C419138-62E5-439F-AA4B-3F0240233B26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6C419138-62E5-439F-AA4B-3F0240233B26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C419138-62E5-439F-AA4B-3F0240233B26}.Release|Any CPU.ActiveCfg = Release|Any CPU
