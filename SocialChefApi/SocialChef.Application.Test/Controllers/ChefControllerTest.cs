@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using NSubstitute;
 using NUnit.Framework;
 using SocialChef.Application.Controllers;
-using SocialChef.Application.Dtos.Chefs;
 using SocialChef.Domain.Chefs;
 using SocialChef.Domain.Test.Utilities;
 
@@ -14,29 +13,14 @@ namespace SocialChef.Application.Test
     public class ChefControllerTest
     {
         private ChefController testObj;
-        private IChefCreator chefCreator;
         private IChefFinder chefFinder;
 
         [SetUp]
         public void SetUp()
         {
-            chefCreator = Substitute.For<IChefCreator>();
             chefFinder = Substitute.For<IChefFinder>();
 
-            testObj = new ChefController(chefCreator, chefFinder);
-        }
-
-        [Test]
-        public async Task Create_CreatedChef_ReturnChef201()
-        {
-            var dto = new CreateChefDto();
-            var chef = CreateChef();
-            chefCreator.CreateAsync("", "", "", "").ReturnsForAnyArgs(chef);
-
-            var response = await testObj.Create(dto);
-
-            Assert.AreEqual((int)HttpStatusCode.Created, response.StatusCode);
-            Assert.AreEqual(chef.ID.Value, response.Data!.ID);
+            testObj = new ChefController(chefFinder);
         }
 
         [Test]

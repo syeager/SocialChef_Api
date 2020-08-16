@@ -14,23 +14,11 @@ namespace SocialChef.Application.Controllers
 {
     public class ChefController : Controller
     {
-        private readonly IChefCreator chefCreator;
         private readonly IChefFinder chefFinder;
 
-        public ChefController(IChefCreator chefCreator, IChefFinder chefFinder)
+        public ChefController(IChefFinder chefFinder)
         {
-            this.chefCreator = chefCreator;
             this.chefFinder = chefFinder;
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        [ResponseType(HttpStatusCode.Created, typeof(ChefDto))]
-        [ResponseType(HttpStatusCode.BadRequest)]
-        public async Task<ApiResult<ChefDto>> Create(CreateChefDto dto)
-        {
-            var chef = await chefCreator.CreateAsync(dto.Name, dto.Email, dto.Password, dto.PasswordConfirm);
-            return new CreatedResult<ChefDto>(chef);
         }
 
         [HttpGet("user/{userID}")]
