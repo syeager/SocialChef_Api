@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using LittleByte.Asp.Business;
 using LittleByte.Asp.Test.Database;
 using LittleByte.Asp.Test.Utilities;
-using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using SocialChef.Domain.Chefs;
 using SocialChef.Domain.Document;
@@ -24,8 +23,8 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Services
         [SetUp]
         public void SetUp()
         {
-            DbContextUtility.CreateCosmosInMemory(ref cosmosContext, (IOptions<CosmosOptions>)null);
-            DbContextUtility.CreateInMemory(ref sqlContext);
+            DbContextFactory.BuildCosmos(ref cosmosContext);
+            DbContextFactory.BuildSql(ref sqlContext);
 
             chefDao = new ChefDao(Guid.NewGuid(), "name");
             sqlContext.AddAndSave(chefDao);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using LittleByte.Asp.Test.Database;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
@@ -12,23 +11,16 @@ using SocialChef.Domain.Test.Utilities;
 
 namespace SocialChef.Domain.Test.Domains.Chefs.Services
 {
-    // TODO: Identity server register fail - pass failure on
     public class ChefCreatorTest
     {
         private ChefCreator testObj;
         private IIdentityService identityService;
         private SqlDbContext sqlContext;
 
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
-        {
-            DbContextUtility.CreateInMemory(ref sqlContext);
-        }
-
         [SetUp]
         public void SetUp()
         {
-            sqlContext.EnsureRecreated();
+            DbContextFactory.BuildSql(ref sqlContext);
 
             identityService = Substitute.For<IIdentityService>();
 

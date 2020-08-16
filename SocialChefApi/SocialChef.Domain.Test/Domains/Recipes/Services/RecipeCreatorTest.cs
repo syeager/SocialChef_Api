@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using LittleByte.Asp.Exceptions;
 using LittleByte.Asp.Test.Database;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using SocialChef.Domain.Document;
 using SocialChef.Domain.Recipes;
@@ -15,7 +14,7 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Services
     public class RecipeCreatorTest
     {
         private RecipeCreator testObj;
-        private CosmosContext documentContext;
+        private CosmosContext cosmosContext;
         private SqlDbContext sqlContext;
 
         private Guid chefId;
@@ -23,10 +22,10 @@ namespace SocialChef.Domain.Test.Domains.Recipes.Services
         [SetUp]
         public void SetUp()
         {
-            DbContextUtility.CreateCosmosInMemory(ref documentContext, (IOptions<CosmosOptions>)null);
-            DbContextUtility.CreateInMemory(ref sqlContext);
+            DbContextFactory.BuildCosmos(ref cosmosContext);
+            DbContextFactory.BuildSql(ref sqlContext);
 
-            testObj = new RecipeCreator(documentContext, sqlContext);
+            testObj = new RecipeCreator(cosmosContext, sqlContext);
 
             chefId = sqlContext.AddAndSave(new ChefDao(Guid.Empty, "name")).ID;
         }
