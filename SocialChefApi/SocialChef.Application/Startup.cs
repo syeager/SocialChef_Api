@@ -37,17 +37,28 @@ namespace SocialChef.Application
             services.AddHealthChecks();
             services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase; });
             services.AddSwaggerDocument(settings => { settings.Title = "Social Chef API"; });
-
-            services.AddLogging(builder => { builder.AddApplicationInsights(""); });
-            services.AddApplicationInsightsTelemetry();
-
-            services.AddIdentityServer()
-                .AddApiAuthorization<Domain.Relational.ChefDao, Domain.Relational.SqlDbContext>();
-
-            services.AddAuthentication()
-                .AddIdentityServerJwt();
-
             Domain.Startup.ConfigureServices(services, configuration);
+            AddLogging();
+            AddIdentity();
+
+            void AddLogging()
+            {
+                // TODO: Add key.
+                services.AddLogging(builder => { builder.AddApplicationInsights(""); });
+                services.AddApplicationInsightsTelemetry();
+            }
+
+            void AddIdentity()
+            {
+                services.AddDefaultIdentity<Domain.Relational.UserDao>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddEntityFrameworkStores<Domain.Relational.SqlDbContext>();
+
+                services.AddIdentityServer()
+                    .AddApiAuthorization<Domain.Relational.UserDao, Domain.Relational.SqlDbContext>();
+
+                services.AddAuthentication()
+                    .AddIdentityServerJwt();
+            }
         }
 
         [UsedImplicitly]
