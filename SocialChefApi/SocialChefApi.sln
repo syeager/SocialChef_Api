@@ -18,8 +18,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Domain.Document"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Domain.Relational", "SocialChef.Domain.Relational\SocialChef.Domain.Relational.csproj", "{0C302FA7-D0D9-4CB3-939D-5096CF3DE47D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Identity.Transport", "SocialChef.Identity.Transport\SocialChef.Identity.Transport.csproj", "{0C4C3CB8-8018-448D-8746-2CDEFC3FEE5E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Domain", "SocialChef.Domain\SocialChef.Domain.csproj", "{A8ACCE4F-3473-4894-AA83-CC892058A1BA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialChef.Domain.Test", "SocialChef.Domain.Test\SocialChef.Domain.Test.csproj", "{A61CB408-7282-46A8-A718-8164FEFF0EFB}"
@@ -52,10 +50,6 @@ Global
 		{0C302FA7-D0D9-4CB3-939D-5096CF3DE47D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C302FA7-D0D9-4CB3-939D-5096CF3DE47D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C302FA7-D0D9-4CB3-939D-5096CF3DE47D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0C4C3CB8-8018-448D-8746-2CDEFC3FEE5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C4C3CB8-8018-448D-8746-2CDEFC3FEE5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C4C3CB8-8018-448D-8746-2CDEFC3FEE5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C4C3CB8-8018-448D-8746-2CDEFC3FEE5E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A8ACCE4F-3473-4894-AA83-CC892058A1BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A8ACCE4F-3473-4894-AA83-CC892058A1BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8ACCE4F-3473-4894-AA83-CC892058A1BA}.Release|Any CPU.ActiveCfg = Release|Any CPU

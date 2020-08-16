@@ -50,7 +50,8 @@ namespace SocialChef.Application
 
             void AddIdentity()
             {
-                services.AddDefaultIdentity<Domain.Relational.UserDao>(options => options.SignIn.RequireConfirmedAccount = true)
+                // TODO: Require confirmation
+                services.AddDefaultIdentity<Domain.Relational.UserDao>(options => options.SignIn.RequireConfirmedAccount = false)
                     .AddEntityFrameworkStores<Domain.Relational.SqlDbContext>();
 
                 services.AddIdentityServer()

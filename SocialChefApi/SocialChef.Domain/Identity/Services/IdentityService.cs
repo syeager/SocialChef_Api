@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using LittleByte.Asp.Exceptions;
 using LittleByte.Asp.Validation;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using SocialChef.Identity.Transport;
+using Microsoft.AspNetCore.Identity;
+using SocialChef.Domain.Relational;
 
 namespace SocialChef.Domain.Identity
 {
@@ -18,15 +14,14 @@ namespace SocialChef.Domain.Identity
 
     internal class IdentityService : IIdentityService
     {
-        private readonly HttpClient httpClient;
-        private readonly string identityServerUrl;
+        private readonly UserManager<UserDao> userManager;
 
-        public IdentityService(HttpClient httpClient, IOptions<IdentityOptions> identityOptions)
+        public IdentityService(UserManager<UserDao> userManager)
         {
-            this.httpClient = httpClient;
-            identityServerUrl = identityOptions.Value.Address;
+            this.userManager = userManager;
         }
 
+        // TODO: Send confirmation email.
         public async Task<User> RegisterAsync(string email, string password, string passwordConfirm)
         {
             if(password != passwordConfirm)
@@ -39,26 +34,17 @@ namespace SocialChef.Domain.Identity
                 throw new BadRequestException($"'{email}' is not a valid email.");
             }
 
-            var request = new RegisterRequest(email, password);
-            var requestJson = JsonConvert.SerializeObject(request);
-            var stringContent = new StringContent(requestJson, Encoding.UTF8, "application/json");
+            var userDao = new UserDao {Email = email, UserName = email};
+            var result = await userManager.CreateAsync(userDao, password);
 
-            var response = await httpClient.PostAsync(new Uri($"{identityServerUrl}/account/register"), stringContent);
-            var responseBody = await response.Content.ReadAsStringAsync();
-
-            if(response.IsSuccessStatusCode)
+            if(result.Succeeded)
             {
-                var userDto = JsonConvert.DeserializeObject<UserDto>(responseBody);
-                var user = new User(new DomainGuid<User>(userDto.ID));
+                var user = new User(new DomainGuid<User>(Guid.Parse(userDao.Id)));
                 return user;
             }
 
-            var exception = response.StatusCode switch
-            {
-                HttpStatusCode.BadRequest => new BadRequestException(responseBody),
-                _ => new HttpException(HttpStatusCode.InternalServerError, responseBody)
-            };
-            throw exception;
+            var error = string.Join(", ", result.Errors);
+            throw new BadRequestException($"Failed to register: {error}");
         }
     }
 }

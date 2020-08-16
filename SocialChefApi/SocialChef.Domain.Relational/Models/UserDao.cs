@@ -2,5 +2,6 @@
 
 namespace SocialChef.Domain.Relational
 {
+    // TODO: Use Guid.
     public class UserDao : IdentityUser {}
 }

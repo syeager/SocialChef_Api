@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace SocialChef.Identity.Transport
+namespace SocialChef.Application.Dtos.User
 {
     public class RegisterRequest
     {

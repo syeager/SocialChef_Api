@@ -1,57 +1,50 @@
-﻿using System.Net;
-using LittleByte.Asp.Exceptions;
+﻿using LittleByte.Asp.Exceptions;
 using LittleByte.Asp.Test.Fakes;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Identity;
+using NSubstitute;
 using NUnit.Framework;
 using SocialChef.Domain.Identity;
-using SocialChef.Identity.Transport;
+using SocialChef.Domain.Relational;
 
 namespace SocialChef.Domain.Test.Domains.Chefs.Services
 {
     internal class IdentityServiceTest
     {
+        private static class Valid
+        {
+            public const string Password = "abc";
+            public const string Email = "abc";
+        }
+
         private IdentityService testObj;
-        private FakeHttpMessageHandler httpMessageHandler;
+        private FakeUserManager<UserDao> userManager;
 
         [SetUp]
         public void Setup()
         {
-            var httpClient = FakeHttpMessageHandler.Create(out httpMessageHandler);
-            var identityOptions = Options.Create(new IdentityOptions {Address = "http://test"});
+            userManager = Substitute.For<FakeUserManager<UserDao>>();
 
-            testObj = new IdentityService(httpClient, identityOptions);
+            testObj = new IdentityService(userManager);
         }
 
         [Test]
-        public void Register_PasswordConfirmFail_ThrowBadRequest()
+        public void Register_CreateFail_ThrowBadRequest()
         {
-            httpMessageHandler.SetResponse(HttpStatusCode.OK, new UserDto());
-
-            Assert.ThrowsAsync<BadRequestException>(() => testObj.RegisterAsync("a@a.com", "abc", "def"));
+            Assert.ThrowsAsync<BadRequestException>(() => testObj.RegisterAsync(Valid.Email, "abc", "def"));
         }
 
         [Test]
         public void Register_NoEmail_ThrowBadRequest()
         {
-            httpMessageHandler.SetResponse(HttpStatusCode.OK, new UserDto());
-
-            Assert.ThrowsAsync<BadRequestException>(() => testObj.RegisterAsync("not-an-email", "abc", "abc"));
-        }
-
-        [TestCase(HttpStatusCode.InternalServerError)]
-        public void Register_IdentityServerFailureCode_ThrowServerError(HttpStatusCode statusCode)
-        {
-            httpMessageHandler.SetResponse(statusCode, "some error message");
-
-            Assert.ThrowsAsync<HttpException>(() => testObj.RegisterAsync("a@a.com", "abc", "abc"));
+            Assert.ThrowsAsync<BadRequestException>(() => testObj.RegisterAsync("not-an-email", Valid.Password, Valid.Password));
         }
 
         [Test]
-        public void Register_IdentityServer400_ThrowBadRequest()
+        public void Register_CreateFailure_ThrowServerError()
         {
-            httpMessageHandler.SetResponse(HttpStatusCode.BadRequest, "Duplicate user");
+            userManager.CreateAsync(Arg.Any<UserDao>(), Valid.Password).Returns(IdentityResult.Failed());
 
-            Assert.ThrowsAsync<BadRequestException>(() => testObj.RegisterAsync("a@a.com", "abc", "abc"));
+            Assert.ThrowsAsync<BadRequestException>(() => testObj.RegisterAsync(Valid.Email, Valid.Password, Valid.Password));
         }
     }
 }

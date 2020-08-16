@@ -29,7 +29,6 @@
     <ProjectReference Include="..\LittleByte\LittleByte.Asp\LittleByte.Asp.csproj" />
     <ProjectReference Include="..\SocialChef.Domain.Document\SocialChef.Domain.Document.csproj" />
     <ProjectReference Include="..\SocialChef.Domain.Relational\SocialChef.Domain.Relational.csproj" />
-    <ProjectReference Include="..\SocialChef.Identity.Transport\SocialChef.Identity.Transport.csproj" />
   </ItemGroup>
 
 </Project>
