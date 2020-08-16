@@ -5,7 +5,7 @@ using LittleByte.Asp.Application;
 using LittleByte.Asp.Business;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SocialChef.Application.Dtos.Recipes;
+using SocialChef.Application.Dtos;
 using SocialChef.Domain.Recipes;
 using Controller = LittleByte.Asp.Application.Controller;
 

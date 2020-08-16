@@ -2,7 +2,7 @@
 using LittleByte.Asp.Business;
 using SocialChef.Domain.Chefs;
 
-namespace SocialChef.Application.Dtos.Chefs
+namespace SocialChef.Application.Dtos
 {
     public sealed class ChefDto : Dto
     {

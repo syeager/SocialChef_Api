@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace SocialChef.Application.Dtos.User
+namespace SocialChef.Application.Dtos
 {
     public class UserDto
     {

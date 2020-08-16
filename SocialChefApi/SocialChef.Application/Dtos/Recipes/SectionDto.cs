@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SocialChef.Application.Dtos.Recipes
+namespace SocialChef.Application.Dtos
 {
     public class SectionDto
     {

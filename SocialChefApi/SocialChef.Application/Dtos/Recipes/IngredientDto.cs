@@ -1,4 +1,4 @@
-﻿namespace SocialChef.Application.Dtos.Recipes
+﻿namespace SocialChef.Application.Dtos
 {
     public class IngredientDto
     {

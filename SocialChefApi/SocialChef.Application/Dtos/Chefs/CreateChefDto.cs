@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace SocialChef.Application.Dtos.Chefs
+namespace SocialChef.Application.Dtos
 {
     public class CreateChefDto
     {

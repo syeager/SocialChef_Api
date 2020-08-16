@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using LittleByte.Asp.Business;
 using SocialChef.Domain.Recipes;
 
-namespace SocialChef.Application.Dtos.Recipes
+namespace SocialChef.Application.Dtos
 {
     public sealed class RecipeDto : Dto
     {
