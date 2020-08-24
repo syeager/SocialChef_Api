@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using LittleByte.Asp.Application;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SocialChef.Application.Dtos.Chefs;
+using SocialChef.Application.Dtos;
 using SocialChef.Domain.Chefs;
 using Controller = LittleByte.Asp.Application.Controller;
 

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using NSubstitute;
 using NUnit.Framework;
 using SocialChef.Application.Controllers;
-using SocialChef.Application.Dtos.Chefs;
+using SocialChef.Application.Dtos;
 using SocialChef.Domain.Chefs;
 using SocialChef.Domain.Test.Utilities;
 
