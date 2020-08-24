@@ -69,6 +69,7 @@ namespace SocialChef.Application
             if(env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
                 IdentityModelEventSource.ShowPII = true;
                 app.UseCookiePolicy(new CookiePolicyOptions
                 {
