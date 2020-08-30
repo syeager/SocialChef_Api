@@ -8,7 +8,7 @@ using SocialChef.Domain.Relational;
 
 namespace SocialChef.Domain.Test.Domains.Chefs.Services
 {
-    internal class IdentityServiceTest
+    internal class AccountServiceTest
     {
         private static class Valid
         {
@@ -16,15 +16,17 @@ namespace SocialChef.Domain.Test.Domains.Chefs.Services
             public const string Email = "abc";
         }
 
-        private IdentityService testObj;
+        private AccountService testObj;
         private FakeUserManager<UserDao> userManager;
+        private FakeSignInManager<UserDao> signInManager;
 
         [SetUp]
         public void Setup()
         {
             userManager = Substitute.For<FakeUserManager<UserDao>>();
+            signInManager = Substitute.For<FakeSignInManager<UserDao>>();
 
-            testObj = new IdentityService(userManager);
+            testObj = new AccountService(userManager, signInManager);
         }
 
         [Test]

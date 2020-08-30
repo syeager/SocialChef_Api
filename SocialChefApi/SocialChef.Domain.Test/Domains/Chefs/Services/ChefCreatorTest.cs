@@ -14,7 +14,7 @@ namespace SocialChef.Domain.Test.Domains.Chefs.Services
     public class ChefCreatorTest
     {
         private ChefCreator testObj;
-        private IIdentityService identityService;
+        private IAccountService accountService;
         private SqlDbContext sqlContext;
 
         [SetUp]
@@ -22,15 +22,15 @@ namespace SocialChef.Domain.Test.Domains.Chefs.Services
         {
             DbContextFactory.BuildSql(ref sqlContext);
 
-            identityService = Substitute.For<IIdentityService>();
+            accountService = Substitute.For<IAccountService>();
 
-            testObj = new ChefCreator(identityService, sqlContext);
+            testObj = new ChefCreator(accountService, sqlContext);
         }
 
         [Test]
         public void Create_RegistrationFailure_NoChefCreated()
         {
-            identityService.RegisterAsync("", "", "").ThrowsForAnyArgs<Exception>();
+            accountService.RegisterAsync("", "", "").ThrowsForAnyArgs<Exception>();
 
             Assert.ThrowsAsync<Exception>(() => testObj.CreateAsync("", "", "", ""));
 
@@ -41,7 +41,7 @@ namespace SocialChef.Domain.Test.Domains.Chefs.Services
         public async Task Create_Valid_ChefCreated()
         {
             var userId = new DomainGuid<User>(Guid.NewGuid());
-            identityService.RegisterAsync(
+            accountService.RegisterAsync(
                 ValidProperties.Email,
                 ValidProperties.Password,
                 ValidProperties.Password

@@ -21,8 +21,10 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.6.2" />
-    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.1.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.7" />
+    <PackageReference Include="OpenIddict.AspNetCore" Version="3.0.0-beta3.20403.69" />
+    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="3.0.0-beta3.20403.69" />
   </ItemGroup>
 
   <ItemGroup>

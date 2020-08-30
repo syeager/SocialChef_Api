@@ -7,18 +7,21 @@ using SocialChef.Domain.Relational;
 
 namespace SocialChef.Domain.Identity
 {
-    public interface IIdentityService
+    public interface IAccountService
     {
         Task<User> RegisterAsync(string email, string password, string passwordConfirm);
+        Task<User> LogInAsync(string email, string password);
     }
 
-    internal class IdentityService : IIdentityService
+    internal class AccountService : IAccountService
     {
         private readonly UserManager<UserDao> userManager;
+        private readonly SignInManager<UserDao> signInManager;
 
-        public IdentityService(UserManager<UserDao> userManager)
+        public AccountService(UserManager<UserDao> userManager, SignInManager<UserDao> signInManager)
         {
             this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         // TODO: Send confirmation email.
@@ -45,6 +48,11 @@ namespace SocialChef.Domain.Identity
 
             var error = string.Join(", ", result.Errors);
             throw new BadRequestException($"Failed to register: {error}");
+        }
+
+        public Task<User> LogInAsync(string email, string password)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using LittleByte.Asp.Configuration;
 using LittleByte.Asp.Database;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +11,7 @@ using SocialChef.Domain.Document;
 using SocialChef.Domain.Identity;
 using SocialChef.Domain.Recipes;
 using SocialChef.Domain.Relational;
+using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace SocialChef.Domain
 {
@@ -18,27 +19,26 @@ namespace SocialChef.Domain
     {
         public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            AddOptions(services, configuration);
             AddServices(services);
             AddDataStores(services, configuration);
-        }
-
-        private static void AddOptions(IServiceCollection services, IConfiguration configuration)
-        {
-            services.ConfigureOptions<IdentityOptions>(configuration, IdentityOptions.Key);
+            AddOidc(services);
         }
 
         private static void AddServices(IServiceCollection services)
         {
             services.AddTransient<HttpClient>();
 
-            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<IAuthorizationService, AuthorizationService>();
 
             services.AddTransient<IChefCreator, ChefCreator>();
             services.AddTransient<IChefFinder, ChefFinder>();
 
             services.AddTransient<IRecipeCreator, RecipeCreator>();
             services.AddTransient<IRecipeFinder, RecipeFinder>();
+
+            services.AddIdentity<UserDao, IdentityRole>()
+                .AddEntityFrameworkStores<SqlDbContext>();
         }
 
         private static void AddDataStores(IServiceCollection services, IConfiguration configuration)
@@ -73,7 +73,60 @@ namespace SocialChef.Domain
         {
             var sqlConnectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddHealthChecks().AddDbContextCheck<SqlDbContext>("SqlDB");
-            services.AddDbContext<SqlDbContext>(options => options.UseSqlServer(sqlConnectionString));
+            services.AddDbContext<SqlDbContext>(options =>
+            {
+                options.UseSqlServer(sqlConnectionString);
+                options.UseOpenIddict();
+            });
+        }
+
+        private static void AddOidc(IServiceCollection services)
+        {
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.ClaimsIdentity.UserNameClaimType = Claims.Name;
+                options.ClaimsIdentity.UserIdClaimType = Claims.Subject;
+                options.ClaimsIdentity.RoleClaimType = Claims.Role;
+            });
+
+            services.AddOpenIddict()
+                .AddCore(options =>
+                {
+                    options.UseEntityFrameworkCore()
+                        .UseDbContext<SqlDbContext>();
+                })
+                .AddServer(options =>
+                {
+                    options
+                        .SetAuthorizationEndpointUris("/connect/authorize")
+                        .SetTokenEndpointUris("/connect/token")
+                        .SetLogoutEndpointUris("/connect/logout")
+                        .SetIntrospectionEndpointUris("/connect/introspect")
+                        .SetUserinfoEndpointUris("/connect/userinfo");
+
+                    options.RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles);
+
+                    options
+                        .AllowImplicitFlow()
+                        .AllowAuthorizationCodeFlow();
+
+                    // TODO: Make prod certs.
+                    options.AddDevelopmentEncryptionCertificate()
+                        .AddDevelopmentSigningCertificate();
+
+                    options
+                        .UseAspNetCore()
+                        .EnableAuthorizationEndpointPassthrough()
+                        .EnableUserinfoEndpointPassthrough()
+                        .EnableStatusCodePagesIntegration()
+                        // TODO: Remove.
+                        .DisableTransportSecurityRequirement();
+                })
+                .AddValidation(options =>
+                {
+                    options.UseLocalServer();
+                    options.UseAspNetCore();
+                });
         }
     }
 }

@@ -12,18 +12,18 @@ namespace SocialChef.Domain.Chefs
 
     public class ChefCreator : IChefCreator
     {
-        private readonly IIdentityService identityService;
+        private readonly IAccountService accountService;
         private readonly SqlDbContext sqlContext;
 
-        public ChefCreator(IIdentityService identityService, SqlDbContext sqlContext)
+        public ChefCreator(IAccountService accountService, SqlDbContext sqlContext)
         {
-            this.identityService = identityService;
+            this.accountService = accountService;
             this.sqlContext = sqlContext;
         }
 
         public async Task<Chef> CreateAsync(string name, string email, string password, string passwordConfirm)
         {
-            var userDto = await identityService.RegisterAsync(email, password, passwordConfirm);
+            var userDto = await accountService.RegisterAsync(email, password, passwordConfirm);
 
             var chef = Chef.Construct(null, userDto.Id, name).GetModelOrThrow();
             ChefDao chefDao = chef;
