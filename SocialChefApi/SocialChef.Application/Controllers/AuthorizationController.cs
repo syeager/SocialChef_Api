@@ -18,6 +18,7 @@ namespace SocialChef.Application.Controllers
         [HttpGet("~/connect/authorize")]
         public Task<IActionResult> Authorize()
         {
+            #error Need to implement this to continue the authorization code flow.
             throw new NotImplementedException();
         }
 
