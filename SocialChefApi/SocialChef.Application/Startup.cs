@@ -1,7 +1,6 @@
 using System.Text.Json;
 using JetBrains.Annotations;
 using LittleByte.Asp.Application;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -38,28 +37,15 @@ namespace SocialChef.Application
             services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase; });
             services.AddSwaggerDocument(settings => { settings.Title = "Social Chef API"; });
             Domain.Startup.ConfigureServices(services, configuration);
-            AddLogging();
-            AddIdentity();
+            // TODO: Was causing a null reference.
+            //AddLogging();
 
-            void AddLogging()
-            {
-                // TODO: Add key.
-                services.AddLogging(builder => { builder.AddApplicationInsights(""); });
-                services.AddApplicationInsightsTelemetry();
-            }
-
-            void AddIdentity()
-            {
-                // TODO: Require confirmation
-                services.AddDefaultIdentity<Domain.Relational.UserDao>(options => options.SignIn.RequireConfirmedAccount = false)
-                    .AddEntityFrameworkStores<Domain.Relational.SqlDbContext>();
-
-                services.AddIdentityServer()
-                    .AddApiAuthorization<Domain.Relational.UserDao, Domain.Relational.SqlDbContext>();
-
-                services.AddAuthentication()
-                    .AddIdentityServerJwt();
-            }
+            //void AddLogging()
+            //{
+            //    // TODO: Add key.
+            //    services.AddLogging(builder => { builder.AddApplicationInsights(""); });
+            //    services.AddApplicationInsightsTelemetry();
+            //}
         }
 
         [UsedImplicitly]
@@ -87,7 +73,6 @@ namespace SocialChef.Application
             app.UseHealthChecks();
             app.UseRouting();
             app.UseAuthentication();
-            app.UseIdentityServer();
             app.UseAuthorization();
             app.UseHttpExceptions();
             app.UseModelValidationExceptions();

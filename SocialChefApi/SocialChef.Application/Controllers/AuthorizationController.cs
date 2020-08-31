@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OpenIddict.Server.AspNetCore;
 using SocialChef.Domain.Identity;
 
 namespace SocialChef.Application.Controllers
@@ -21,15 +22,11 @@ namespace SocialChef.Application.Controllers
         }
 
         [HttpPost("~/connect/token")]
-        public Task<IActionResult> Exchange()
+        public async Task<IActionResult> Exchange()
         {
-            throw new NotImplementedException();
-        }
-
-        [HttpPost("~/connect/logout"), ValidateAntiForgeryToken]
-        public Task<IActionResult> LogoutPost()
-        {
-            throw new NotImplementedException();
+            var tokenRequest = new TokenRequest(HttpContext);
+            var claimsPrincipal = await authorizationService.ExchangeToken(tokenRequest);
+            return SignIn(claimsPrincipal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
         }
     }
 }

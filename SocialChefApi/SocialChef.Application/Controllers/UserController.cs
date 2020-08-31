@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using LittleByte.Asp.Application;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,7 @@ using Controller = LittleByte.Asp.Application.Controller;
 
 namespace SocialChef.Application.Controllers
 {
+    // TODO: Rename to AccountController.
     public class UserController : Controller
     {
         private readonly IChefCreator chefCreator;
@@ -26,6 +28,12 @@ namespace SocialChef.Application.Controllers
         {
             var chef = await chefCreator.CreateAsync(dto.Name, dto.Email, dto.Password, dto.PasswordConfirm);
             return new CreatedResult<ChefDto>(chef);
+        }
+
+        [HttpPost("~/connect/logout"), ValidateAntiForgeryToken]
+        public Task<IActionResult> LogoutPost()
+        {
+            throw new NotImplementedException();
         }
     }
 }

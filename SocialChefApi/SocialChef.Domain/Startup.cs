@@ -22,6 +22,8 @@ namespace SocialChef.Domain
             AddServices(services);
             AddDataStores(services, configuration);
             AddOidc(services);
+
+            services.AddHostedService<ClientSetupService>();
         }
 
         private static void AddServices(IServiceCollection services)
