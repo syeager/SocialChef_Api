@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Server.AspNetCore;
 using SocialChef.Domain.Identity;
@@ -16,10 +15,17 @@ namespace SocialChef.Application.Controllers
         }
 
         [HttpGet("~/connect/authorize")]
-        public Task<IActionResult> Authorize()
+        public async Task<IActionResult> Authorize()
         {
-            #error Need to implement this to continue the authorization code flow.
-            throw new NotImplementedException();
+            var authorizeRequest = new AuthorizeRequest(HttpContext);
+            var claimsPrincipal = await authorizationService.Authorize(authorizeRequest);
+
+            if(claimsPrincipal == null)
+            {
+                return Challenge();
+            }
+
+            return SignIn(claimsPrincipal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
         }
 
         [HttpPost("~/connect/token")]

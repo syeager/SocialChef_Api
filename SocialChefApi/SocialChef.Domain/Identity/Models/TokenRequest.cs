@@ -1,27 +1,19 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using OpenIddict.Abstractions;
 
 namespace SocialChef.Domain.Identity
 {
-    public interface ITokenRequest
+    public interface ITokenRequest : IOidcRequest
     {
-        OpenIddictRequest? GetOpenIddictServerRequest();
         Task<AuthenticateResult> AuthenticateAsync(string scheme);
     }
 
-    public class TokenRequest : ITokenRequest
+    public class TokenRequest : OidcRequest, ITokenRequest
     {
-        private readonly HttpContext httpContext;
-
         public TokenRequest(HttpContext httpContext)
-        {
-            this.httpContext = httpContext;
-        }
+            : base(httpContext) {}
 
-        public OpenIddictRequest? GetOpenIddictServerRequest() => httpContext.GetOpenIddictServerRequest();
         public Task<AuthenticateResult> AuthenticateAsync(string scheme) => httpContext.AuthenticateAsync(scheme);
     }
 }

@@ -10,12 +10,11 @@ using Controller = LittleByte.Asp.Application.Controller;
 
 namespace SocialChef.Application.Controllers
 {
-    // TODO: Rename to AccountController.
-    public class UserController : Controller
+    public class AccountController : Controller
     {
         private readonly IChefCreator chefCreator;
 
-        public UserController(IChefCreator chefCreator)
+        public AccountController(IChefCreator chefCreator)
         {
             this.chefCreator = chefCreator;
         }
@@ -30,7 +29,15 @@ namespace SocialChef.Application.Controllers
             return new CreatedResult<ChefDto>(chef);
         }
 
-        [HttpPost("~/connect/logout"), ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        [HttpGet("login")]
+        public async Task<IActionResult> Login(string returnUrl)
+        {
+            await Task.CompletedTask;
+            return Ok($"Hello! You wanted to go to: '{returnUrl}'");
+        }
+
+        [HttpPost("logout"), ValidateAntiForgeryToken]
         public Task<IActionResult> LogoutPost()
         {
             throw new NotImplementedException();

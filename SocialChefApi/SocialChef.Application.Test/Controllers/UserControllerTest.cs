@@ -12,7 +12,7 @@ namespace SocialChef.Application.Test
 {
     public class UserControllerTest
     {
-        private UserController testObj;
+        private AccountController testObj;
         private IChefCreator chefCreator;
 
         [SetUp]
@@ -20,7 +20,7 @@ namespace SocialChef.Application.Test
         {
             chefCreator = Substitute.For<IChefCreator>();
 
-            testObj = new UserController(chefCreator);
+            testObj = new AccountController(chefCreator);
         }
 
         [Test]
