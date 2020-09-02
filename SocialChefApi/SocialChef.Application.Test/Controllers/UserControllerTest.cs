@@ -6,6 +6,7 @@ using NUnit.Framework;
 using SocialChef.Application.Controllers;
 using SocialChef.Application.Dtos;
 using SocialChef.Domain.Chefs;
+using SocialChef.Domain.Identity;
 using SocialChef.Domain.Test.Utilities;
 
 namespace SocialChef.Application.Test
@@ -14,13 +15,15 @@ namespace SocialChef.Application.Test
     {
         private AccountController testObj;
         private IChefCreator chefCreator;
+        private IAccountService accountService;
 
         [SetUp]
         public void SetUp()
         {
             chefCreator = Substitute.For<IChefCreator>();
+            accountService = Substitute.For<IAccountService>();
 
-            testObj = new AccountController(chefCreator);
+            testObj = new AccountController(chefCreator, accountService);
         }
 
         [Test]

@@ -26,6 +26,7 @@ namespace SocialChef.Application
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews();
             services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
 
             if(!environment.IsDevelopment())

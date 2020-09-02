@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewModels\Shared\**" />
+    <Content Remove="ViewModels\Shared\**" />
+    <EmbeddedResource Remove="ViewModels\Shared\**" />
+    <None Remove="ViewModels\Shared\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.14.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.7" />
@@ -33,6 +40,10 @@
   <ItemGroup>
     <ProjectReference Include="..\LittleByte\LittleByte.Asp\LittleByte.Asp.csproj" />
     <ProjectReference Include="..\SocialChef.Domain\SocialChef.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Account\" />
   </ItemGroup>
 
 

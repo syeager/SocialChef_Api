@@ -10,7 +10,8 @@ namespace SocialChef.Domain.Identity
     public interface IAccountService
     {
         Task<User> RegisterAsync(string email, string password, string passwordConfirm);
-        Task<User> LogInAsync(string email, string password);
+        // TODO: Standardize sign in vs log in.
+        Task<SignInResult> LogInAsync(string email, string password, bool rememberMe);
     }
 
     internal class AccountService : IAccountService
@@ -50,9 +51,9 @@ namespace SocialChef.Domain.Identity
             throw new BadRequestException($"Failed to register: {error}");
         }
 
-        public Task<User> LogInAsync(string email, string password)
+        public Task<SignInResult> LogInAsync(string email, string password, bool rememberMe)
         {
-            throw new NotImplementedException();
+            return signInManager.PasswordSignInAsync(email, password, rememberMe, false);
         }
     }
 }
