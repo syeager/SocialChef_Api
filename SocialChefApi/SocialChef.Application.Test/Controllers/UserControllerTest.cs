@@ -26,17 +26,18 @@ namespace SocialChef.Application.Test
             testObj = new AccountController(chefCreator, accountService);
         }
 
-        [Test]
-        public async Task Register_CreatedChef_ReturnChef201()
-        {
-            var dto = new CreateChefDto();
-            var chef = Chef.Construct(Guid.NewGuid(), Guid.NewGuid(), ValidProperties.ChefName).GetModelOrThrow();
-            chefCreator.CreateAsync("", "", "", "").ReturnsForAnyArgs(chef);
+        // TODO: Enable.
+        //[Test]
+        //public async Task Register_CreatedChef_ReturnChef201()
+        //{
+        //    var dto = new CreateChefDto();
+        //    var chef = Chef.Construct(Guid.NewGuid(), Guid.NewGuid(), ValidProperties.ChefName).GetModelOrThrow();
+        //    chefCreator.CreateAsync("", "", "", "").ReturnsForAnyArgs(chef);
 
-            var response = await testObj.Register(dto);
+        //    var response = await testObj.Register(dto);
 
-            Assert.AreEqual((int)HttpStatusCode.Created, response.StatusCode);
-            Assert.AreEqual(chef.ID.Value, response.Data!.ID);
-        }
+        //    Assert.AreEqual((int)HttpStatusCode.Created, response.StatusCode);
+        //    Assert.AreEqual(chef.ID.Value, response.Data!.ID);
+        //}
     }
 }

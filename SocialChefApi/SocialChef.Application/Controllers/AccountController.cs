@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
-using LittleByte.Asp.Application;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SocialChef.Application.Dtos;
 using SocialChef.Application.ViewModels.Account;
 using SocialChef.Domain.Chefs;
 using SocialChef.Domain.Identity;
-using Controller = Microsoft.AspNetCore.Mvc.Controller;
 
 namespace SocialChef.Application.Controllers
 {
@@ -24,14 +21,42 @@ namespace SocialChef.Application.Controllers
             this.accountService = accountService;
         }
 
+        //[AllowAnonymous]
+        //[HttpPost("register")]
+        //[ResponseType(HttpStatusCode.Created, typeof(ChefDto))]
+        //[ResponseType(HttpStatusCode.BadRequest)]
+        //public async Task<ApiResult<ChefDto>> Register(CreateChefDto dto)
+        //{
+        //    var chef = await chefCreator.CreateAsync(dto.Name, dto.Email, dto.Password, dto.PasswordConfirm);
+        //    return new CreatedResult<ChefDto>(chef);
+        //}
+
+        [HttpGet("register")]
         [AllowAnonymous]
-        [HttpPost("register")]
-        [ResponseType(HttpStatusCode.Created, typeof(ChefDto))]
-        [ResponseType(HttpStatusCode.BadRequest)]
-        public async Task<ApiResult<ChefDto>> Register(CreateChefDto dto)
+        public IActionResult Register(string? returnUrl)
         {
-            var chef = await chefCreator.CreateAsync(dto.Name, dto.Email, dto.Password, dto.PasswordConfirm);
-            return new CreatedResult<ChefDto>(chef);
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        [HttpPost("register")]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model, string? returnUrl)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if(ModelState.IsValid)
+            {
+                var result = await accountService.RegisterAsync(model.Email, model.Password, model.ConfirmPassword);
+
+                if(result.Succeeded)
+                {
+                    await accountService.LogInAsync(model.Email, model.Password, false);
+                    return Redirect(returnUrl);
+                }
+            }
+
+            return View(model);
         }
 
         [AllowAnonymous]

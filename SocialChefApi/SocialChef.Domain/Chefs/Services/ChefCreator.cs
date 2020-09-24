@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using LittleByte.Asp.Database;
 using SocialChef.Domain.Identity;
 using SocialChef.Domain.Relational;
@@ -21,15 +22,16 @@ namespace SocialChef.Domain.Chefs
             this.sqlContext = sqlContext;
         }
 
-        public async Task<Chef> CreateAsync(string name, string email, string password, string passwordConfirm)
+        public Task<Chef> CreateAsync(string name, string email, string password, string passwordConfirm)
         {
-            var userDto = await accountService.RegisterAsync(email, password, passwordConfirm);
+            throw new NotImplementedException();
+            //var userDto = await accountService.RegisterAsync(email, password, passwordConfirm);
 
-            var chef = Chef.Construct(null, userDto.Id, name).GetModelOrThrow();
-            ChefDao chefDao = chef;
-            await sqlContext.AddAndSaveAsync(chefDao);
+            //var chef = Chef.Construct(null, userDto.Id, name).GetModelOrThrow();
+            //ChefDao chefDao = chef;
+            //await sqlContext.AddAndSaveAsync(chefDao);
 
-            return chefDao;
+            //return chefDao;
         }
     }
 }

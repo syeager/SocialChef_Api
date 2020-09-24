@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using LittleByte.Asp.Exceptions;
 using LittleByte.Asp.Validation;
 using Microsoft.AspNetCore.Identity;
@@ -9,7 +8,8 @@ namespace SocialChef.Domain.Identity
 {
     public interface IAccountService
     {
-        Task<User> RegisterAsync(string email, string password, string passwordConfirm);
+        Task<IdentityResult> RegisterAsync(string email, string password, string passwordConfirm);
+
         // TODO: Standardize sign in vs log in.
         Task<SignInResult> LogInAsync(string email, string password, bool rememberMe);
     }
@@ -26,7 +26,7 @@ namespace SocialChef.Domain.Identity
         }
 
         // TODO: Send confirmation email.
-        public async Task<User> RegisterAsync(string email, string password, string passwordConfirm)
+        public async Task<IdentityResult> RegisterAsync(string email, string password, string passwordConfirm)
         {
             if(password != passwordConfirm)
             {
@@ -40,15 +40,7 @@ namespace SocialChef.Domain.Identity
 
             var userDao = new UserDao {Email = email, UserName = email};
             var result = await userManager.CreateAsync(userDao, password);
-
-            if(result.Succeeded)
-            {
-                var user = new User(new DomainGuid<User>(Guid.Parse(userDao.Id)));
-                return user;
-            }
-
-            var error = string.Join(", ", result.Errors);
-            throw new BadRequestException($"Failed to register: {error}");
+            return result;
         }
 
         public Task<SignInResult> LogInAsync(string email, string password, bool rememberMe)

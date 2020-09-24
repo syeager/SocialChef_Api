@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
@@ -45,7 +46,7 @@ namespace SocialChef.Domain.Test.Domains.Chefs.Services
                 ValidProperties.Email,
                 ValidProperties.Password,
                 ValidProperties.Password
-            ).Returns(new User(userId));
+            ).Returns(IdentityResult.Success);
 
             var user = await testObj.CreateAsync(
                 ValidProperties.ChefName,
