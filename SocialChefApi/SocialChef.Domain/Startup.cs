@@ -104,6 +104,7 @@ namespace SocialChef.Domain
                         .SetTokenEndpointUris("/connect/token")
                         .SetLogoutEndpointUris("/connect/logout")
                         .SetIntrospectionEndpointUris("/connect/introspect")
+                        .SetConfigurationEndpointUris("/connect/configuration")
                         .SetUserinfoEndpointUris("/connect/userinfo");
 
                     options.RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles);
